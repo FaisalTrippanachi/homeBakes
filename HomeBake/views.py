@@ -3,24 +3,26 @@ from django.http import HttpResponse
 
 # Create your views here.
 
+def home(request):
+    return render(request,'HomeBake/home.html')
 
-def AboutFun(request):
-    return render(request,'about.html')
+def about(request):
+    return render(request,'HomeBake/about.html')
 
-def productFun(request):
-    return render(request,'product.html')
+def product(request):
+    return render(request,'HomeBake/product.html')
+  
+def contact(request):
+    return render(request,'HomeBake/contact.html')
 
-def homeFun(request):
-    return render(request,'home.html')
-    
-def contactFun(request):
-    return render(request,'contact.html')
+def product_details(request):
+    return render(request,'HomeBake/product_details.html')
 
-def productdetailsFun(request):
-    return render(request,'productdetails.html')
+def my_cart(request):
+    return render(request,'HomeBake/my_cart.html')
 
-def cartFun(request):
-    return render(request,'cart.html')
+def my_account(request):
+    return render(request,'HomeBake/account.html')
 
-def accountFun(request):
-    return render(request,'account.html')
+def my_orders(request):
+    return render(request,'HomeBake/my_orders.html')

@@ -4,11 +4,12 @@ from . import views
 
 urlpatterns = [
     
-    path('about',views.AboutFun,name='about'),
-    path('product',views.productFun,name='product'),
-    path('home',views.homeFun,name='home'),
-    path('contact',views.contactFun,name='contact'),
-    path('productdetails',views.productdetailsFun,name='productdetails'),
-    path('cart',views.cartFun,name='cart'),
-    path('account',views.accountFun,name='account')
+    path('about',views.about,name='about'),
+    path('product',views.product,name='product'),
+    path('home',views.home,name='home'),
+    path('contact',views.contact,name='contact'),
+    path('productdetails',views.product_details,name='productdetails'),
+    path('cart',views.my_cart,name='cart'),
+    path('account',views.my_account,name='account'),
+    path('orders',views.my_orders,name='my_orders')
 ]

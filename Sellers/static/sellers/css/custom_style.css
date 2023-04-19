@@ -1,0 +1,23 @@
+
+
+.form-tb{
+	border-spacing: 10px;
+	border-collapse: separate;
+  }
+
+.product_card{
+
+    max-height: 400px;
+}
+
+.product_card img{
+
+     height: 200px;
+     
+}
+
+.order-cname{
+    color: blueviolet;
+    font-weight: bold;
+    font-size: 20px;
+}
