@@ -2,143 +2,114 @@
 
 {% block content %}
 
-<section id="product-cards" data-aos="fade-up" data-aos-duration="1500">
+<section id="" data-aos="fade-up" data-aos-duration="1500">
     <div class="container">
-       
+
         <div class="d-flex align-items-baseline justify-content mt-5">
             <select name="" id="" class="form-control mr-2" style="height: 43px; width: 160px; ">
                 <option value="">Eggless Cake</option>
             </select>
-            <input type="search" placeholder="search by zipcode" style="width: 50%;" class="form-control mr-2" name="" id="">
+            <input type="search" placeholder="search by zipcode" style="width: 50%;" class="form-control mr-2" name=""
+                id="">
             <input type="submit" value="search" class="btn btn-danger" name="" id="">
         </div>
-        
 
 
-       <div class="d-flex justify-content-end">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-       </div>
+
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
 
         <div class="row" style="margin-top:50px;">
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c1.png" alt="">
+
+            <div class="col-md-4 ">
+                
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
+                        alt="Card image cap">
                     <div class="card-body">
-                        <h3>Cream Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$50.10 <span><button>Add Cart</button></span></h6>
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                            <a href="{% url 'home_bake:product_details' %}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c2.png" alt="">
+             
+            <div class="col-md-4 ">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
+                        alt="Card image cap">
                     <div class="card-body">
-                        <h3>Choco Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$60.5 <span><button>Add Cart</button></span></h6>
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c3.png" alt="">
+
+            <div class="col-md-4 py-md-2 px-md-2 ">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
+                        alt="Card image cap">
                     <div class="card-body">
-                        <h3>Slice Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$100.10 <span><button>Add Cart</button></span></h6>
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c4.png" alt="">
+            <div class="col-md-4 ">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
+                        alt="Card image cap">
                     <div class="card-body">
-                        <h3>Fruit Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$30.20 <span><button>Add Cart</button></span></h6>
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 ">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
@@ -146,146 +117,45 @@
 
 
 
-        <div class="row" style="margin-top:50px;" data-aos="fade-up" data-aos-duration="1500">
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c5.png" alt="">
-                    <div class="card-body">
-                        <h3>Brown Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$10.5 <span><button>Add Cart</button></span></h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c6.png" alt="">
-                    <div class="card-body">
-                        <h3>Slice Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$15.5 <span><button>Add Cart</button></span></h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c7.png" alt="">
-                    <div class="card-body">
-                        <h3>Fruit Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star "></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$200.10 <span><button>Add Cart</button></span></h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 py-3 py-md-0">
-                <div class="card">
-                    <div class="overlay">
-                        <button type="button" class="btn btn-secondary" title="Quick View"><i><img
-                                    src="static/images/views.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Wishlist"><i><img
-                                    src="static/images/heart.png" alt="" width="30px"></i></button>
-                        <button type="button" class="btn btn-secondary" title="Add to Cart"><i><img
-                                    src="static/images/add.png" alt="" width="30px"></i></button>
-                    </div>
-                    <img src="static/images/c8.png" alt="">
-                    <div class="card-body">
-                        <h3>Choco Cake</h3>
-                        <div class="star">
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                            <i class="bx bxs-star checked"></i>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                        <h6>$30.20 <span><button>Add Cart</button></span></h6>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </section>
 
 
- 
+
 <script>
     var btns = document.querySelectorAll('.btn');
-var paginationWrapper = document.querySelector('.pagination-wrapper');
-var bigDotContainer = document.querySelector('.big-dot-container');
-var littleDot = document.querySelector('.little-dot');
+    var paginationWrapper = document.querySelector('.pagination-wrapper');
+    var bigDotContainer = document.querySelector('.big-dot-container');
+    var littleDot = document.querySelector('.little-dot');
 
-for(var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener('click', btnClick);
-}
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', btnClick);
+    }
 
-function btnClick() {
-  if(this.classList.contains('btn--prev')) {
-    paginationWrapper.classList.add('transition-prev');
-  } else {
-    paginationWrapper.classList.add('transition-next');  
-  }
-  
-  var timeout = setTimeout(cleanClasses, 500);
-}
+    function btnClick() {
+        if (this.classList.contains('btn--prev')) {
+            paginationWrapper.classList.add('transition-prev');
+        } else {
+            paginationWrapper.classList.add('transition-next');
+        }
 
-function cleanClasses() {
-  if(paginationWrapper.classList.contains('transition-next')) {
-    paginationWrapper.classList.remove('transition-next')
-  } else if(paginationWrapper.classList.contains('transition-prev')) {
-    paginationWrapper.classList.remove('transition-prev')
-  }
-}
-    </script>
+        var timeout = setTimeout(cleanClasses, 500);
+    }
+
+    function cleanClasses() {
+        if (paginationWrapper.classList.contains('transition-next')) {
+            paginationWrapper.classList.remove('transition-next')
+        } else if (paginationWrapper.classList.contains('transition-prev')) {
+            paginationWrapper.classList.remove('transition-prev')
+        }
+    }
+</script>
 
 <!-- product cards end-->
 
 
 <!-- gallary -->
- 
+
 
 {% endblock %}

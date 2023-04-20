@@ -1,0 +1,71 @@
+{% extends 'HomeBakeAdmin/master.html' %}
+{% load static %}
+
+
+ 
+
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+       <div class="row">
+          <div class="col-xxl-12 col-md-6">
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ customer_count }}</div>
+                        <div class="cardName">Customers</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="people-outline"></ion-icon>
+                        
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ product_count }}</div>
+                        <div class="cardName">Total product</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ complaints_count }}</div>
+                        <div class="cardName">Complaints</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ sellers_count }}</div>
+                        <div class="cardName">Seller</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="people-outline"></ion-icon>
+                        
+                    </div>
+                </div>
+            </div>
+          </div>
+           
+          </div>
+           
+           
+          
+       </div>
+    </div>
+    
+ </div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'HomeBake/master.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 text-center mt-5">
+    <h3 class="text-danger">Signup Now!</h3>
+  </div>
+  <div class="col-md-12 d-flex justify-content-center mt-3">
+    {{ status_msg }}
+    <form method="POST" >
+      {% csrf_token %}
+      <table class="form-tb">
+        <tr>
+          <td>
+            <label for="c_name">Name</label>
+          </td>
+          <td>
+            <input type="text" class="form-control " name = "customer_name" id="c_name" aria-describedby="emailHelp">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="email">Email</label>
+          </td>
+          <td>
+            <input type="text" name = "email" class="form-control" id="email">
+          </td>
+        </tr>
+         
+        <tr>
+          <td>
+            <label for="phone">Phone No</label>
+          </td>
+          <td>
+            <input type="text" name = "phone" class="form-control " id="phone">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="address">Address</label>
+          </td>
+          <td>
+          <textarea name="address" class="form-control" id="" cols="30" rows="5"></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="password" name = "password">Password</label>
+          </td>
+          <td>
+            <input type="password" name = "password" class="form-control " id="password">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="password">Confirm Password</label>
+          </td>
+          <td>
+            <input type="password" class="form-control " id="confirm_password">
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+
+          <td>
+
+            <button type="submit" class="btn btn-primary w-50">Signup </button>
+          </td>
+        </tr>
+
+
+      </table>
+    </form>
+  </div>
+</div>
+{% endblock %}

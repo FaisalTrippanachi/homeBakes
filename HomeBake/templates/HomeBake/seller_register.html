@@ -1,0 +1,71 @@
+{% extends 'HomeBake/master.html' %}
+
+{% block content %}
+ 
+<div class="row">
+    <div class="col-md-12 text-center mt-5">
+      <h3 class="text-danger">Signup Now!</h3>
+    </div>
+    <div class="col-md-12 d-flex justify-content-center mt-3">
+      <form method="POST">
+        {% csrf_token %}
+        <table class="form-tb">
+          <tr>
+            <td>
+              <label for="seller_name">Seller Name</label>
+            </td>
+            <td>
+              <input type="text" class="form-control " id="seller_name" name="seller_name">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="email">Email</label>
+            </td>
+            <td>
+              <input type="text" class="form-control " name="email" id="email">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="gender">Gender</label>
+            </td>
+            <td  style="padding: 0px 0px;">
+              <input type="radio" name="gender" value="male"   id="gender"> Male
+              <input type="radio"style="padding: 0px;" value="female" name="gender"   id="gender"> Female
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="phone">Phone No</label>
+            </td>
+            <td>
+              <input type="text" class="form-control " name="phone" id="phone">
+            </td>
+          </tr>
+  
+          <tr>
+            <td>
+              <label for="address">Address</label>
+            </td>
+            <td>
+            <textarea name="address" class="form-control" id="" cols="30" rows="5"></textarea>
+            </td>
+          </tr>
+  
+  
+          <tr>
+            <td></td>
+  
+            <td>
+  
+              <button type="submit" class="btn btn-primary w-50">Signup </button>
+            </td>
+          </tr>
+  
+  
+        </table>
+      </form>
+    </div>
+  </div>
+{% endblock %}

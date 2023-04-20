@@ -165,15 +165,15 @@
       </header>
       <aside id="sidebar" class="sidebar">
          <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item"> <a class="nav-link " href="index.html"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
+            <li class="nav-item"> <a class="nav-link " href="{% url 'seller:dashboard' %}"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
             <li class="nav-heading">Products</li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>Add Product</span> </a></li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>My Products</span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'seller:add_product' %}"> <i class="bi bi-person"></i> <span>Add Product</span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'seller:product_catalogue' %}"> <i class="bi bi-question-circle"></i> <span>My Products</span> </a></li>
             
             <li class="nav-heading">Orders</li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>New </span> </a></li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Pending </span> </a></li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="pages-contact.html"> <i class="bi bi-envelope"></i> <span>History</span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'seller:new_orders' %}"> <i class="bi bi-person"></i> <span>New </span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'seller:pending_orders' %}"> <i class="bi bi-question-circle"></i> <span>Pending </span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'seller:order_history' %}"> <i class="bi bi-envelope"></i> <span>History</span> </a></li>
             <li class="nav-heading">Orders</li>
             <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>Report </span> </a></li>
             <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Sales Report </span> </a></li>

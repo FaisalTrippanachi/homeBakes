@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cake Bakery</title>
-    <link rel="shortcut icon" type="images" href="{% static 'imagess/logo.png'%}">
-    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="shortcut icon" type="images" href="{% static 'HomeBake/images/logo.png'%}">
+    <link rel="stylesheet" href="{% static 'HomeBake/css/style.css'%}">
     <!-- bootstrap links -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -23,8 +23,8 @@
         crossorigin="anonymous"></script>
     <!-- bootstrap links -->
     <!-- fonts links -->
-    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
-    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="{% static 'HomeBake/css/product_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'HomeBake/css/cart.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
@@ -34,6 +34,9 @@
     <!-- icons links -->
     <!-- animation links -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    {% block header %}
+
+    {% endblock %}
     <!-- animation links -->
 </head>
 
@@ -42,12 +45,12 @@
         <!-- navbar -->
         <nav class="navbar navbar-expand-md" id="navbar">
             <!-- Brand -->
-            <a class="navbar-brand" href="#" id="logo"><img src="static/images/logo.png" alt="" width="50px">Cake
+            <a class="navbar-brand" href="#" id="logo"><img src="{% static 'HomeBake/images/logo.png' %}" alt="" width="50px">Cake
                 Bakery</a>
 
             <!-- Toggler/collapsibe Button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span><img src="static/images/menu.png" alt="" width="30px"></span>
+                <span><img src="{% static 'HomeBake/images/menu.png' %}" alt="" width="30px"></span>
             </button>
 
             <!-- Navbar links -->
@@ -81,18 +84,15 @@
                     </li>
                 </ul>
             </div>
+            
             <div class="icons">
-                <img src="static/images/user.png" alt="" width="20px">
-                <img src="static/images/heart.png" alt="" width="20px">
-                <img src="static/images/add.png" alt="" width="24px">
+                <a href="" class="text-white">Be a Seller</a>
+                <img src="{% static 'HomeBake/images/user.png' %}" alt="" width="20px">
+                <img src="{% static 'HomeBake/images/heart.png' %}" alt="" width="20px">
+                <img src="{% static 'HomeBake/images/add.png' %}" alt="" width="24px">
             </div>
         </nav>
-        <!-- navbar end -->
-
-
-
-
-        <!-- product cards -->
+         
         {% block content %}
 
         {% endblock %}
@@ -122,11 +122,7 @@
 
             </div>
         </footer>
-        <!-- footer -->
-
-        <a href="#" class="arrow"><i><img src="./images/up-arrow.png" alt="" width="50px"></i></a>
-
-
+        
 
     </div>
 
