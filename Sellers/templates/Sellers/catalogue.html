@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-md-12">
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-start">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                   <li class="page-item">
@@ -34,78 +34,33 @@
               </nav>
            </div>
     </div>
-    <div class="col-md-4 ">
-        <div class="card product_card" style="width: 18rem;">
-            <img class="card-img-top" src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-    </div>
-
+    
+    {% if products %}
+    {% for product in products %}
     <div class="col-md-4">
         <div class="card product_card" style="width: 18rem;">
             <div class="card-image">
-            <img class="card-img-top" src="https://picky-palate.com/wp-content/uploads/2020/02/IMG_0088-scaled.jpg" alt="Card image cap">
+            <img class="card-img-top" src="http://127.0.0.1:8000/media/{{ product.image }}" alt="{{ product.product_name }}">
 
             </div>
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+            
+              <h5 class="card-title">{{ product.product_name | title }}</h5>
+              <p>Price : Rs {{ product.price }}</p>
+              <p>Status : {{ product.status }}</p>
+              <a href="#" class="btn btn-primary">Edit</a>
             </div>
           </div>
     </div>
+    {% endfor %}
+    {% endif %}
 
-    <div class="col-md-4">
-        <div class="card product_card" style="width: 18rem;">
-            <img class="card-img-top" src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-    </div>
+     
+    
 
-    <div class="col-md-4 ">
-        <div class="card product_card" style="width: 18rem;">
-            <img class="card-img-top" src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-    </div>
+    
 
-
-    <div class="col-md-4">
-        <div class="card product_card" style="width: 18rem;">
-            <img class="card-img-top" src="https://www.amazingcakeideas.com/wp-content/uploads/2015/11/Beautiful-Wedding-Cake.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card product_card" style="width: 18rem;">
-            <div class="card-image">
-            <img class="card-img-top" src="https://picky-palate.com/wp-content/uploads/2020/02/IMG_0088-scaled.jpg" alt="Card image cap">
-
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-    </div>
+     
 </div>
 {% endblock %}
 

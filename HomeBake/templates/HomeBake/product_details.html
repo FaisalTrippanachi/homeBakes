@@ -1,28 +1,48 @@
 {% extends 'HomeBake/master.html' %}
 {% load static %}
 
+{% block header %}
+
+<style>
+     .product-name{
+        color:brown;
+        font-weight: bold;
+        font-size: 25px;
+    }
+    .product-price{
+        color:green;
+        font-weight: bold;
+        font-size: 24px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container my-5">
   <div class="row">
       <div class="col-md-5">
           <div class="main-img">
-              <img class="img-fluid" src="https://i0.wp.com/bakisto.pk/wp-content/uploads/2018/07/57.jpg?fit=3008%2C3552&ssl=1" alt="ProductS">
+              <img class="img-fluid" src="{{ product.image.url }}" alt="{{ product.product_name }}">
                
           </div>
       </div>
       <div class="col-md-7">
+        <form method="POST">
+            {% csrf_token %}
+        
           <div class="main-description px-2">
               <div class="category text-bold">
-                  Category: Birthday Cake
+                  Category: {{ product.category | title }}
               </div>
-              <div class="product-title text-bold my-3">
-                 Cake Name
+              <div class="product-title text-bold my-3 product-name">
+                {{ product.product_name | upper }}
               </div>
 
 
               <div class="price-area my-4">
                   
-                  <p class="new-price text-bold mb-1 text-danger">Rs 200</p>
+                  <p class="text-bold mb-1  product-price">Rs  {{ product.price }}</p>
+                  <input type="text" name="p_price" value="{{ product.price }}">
                   <p class="text-secondary mb-1">(expected to deliver after 3 days of order)</p>
 
               </div>
@@ -33,14 +53,15 @@
                   
 
                   <div class="block quantity">
-                      <input type="number" class="form-control" id="cart_quantity" value="1" min="0" max = "6" >  
+                      <input type="text" name="cart_qty" class="form-control" id="cart_quantity"  style="width: 50px;" value="1" min="0" max = "6" >  
                   </div>
                   <div class="block">
                     (in kg) 
                 </div>
                   <div class="block">
-                    <button class="shadow btn btn-danger">Add to cart</button>
+                    <button type="submit" class="shadow btn btn-danger">Add to cart</button>
                 </div>
+                {{ msg }}
               </div>
 
 
@@ -48,20 +69,14 @@
 
           </div>
 
-          <div class="product-details my-4">
-              <p class="details-title text-color mb-1">Product Details</p>
-              <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat excepturi
-                  odio recusandae aliquid ad impedit autem commodi earum voluptatem laboriosam? </p>
-          </div>
+          
           <div class="product-details my-4">
               <p class="details-title text-color mb-2">Ingredients Used</p>
-              <ul>
-                  <li>Cotton</li>
-                  <li>Machine-wash</li>
-              </ul>
+              <p>{{ product.ingredients_used }} </p>
           </div>
            
       </div>
+    </form>
   </div>
 </div>
 

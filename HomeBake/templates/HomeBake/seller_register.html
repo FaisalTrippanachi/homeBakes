@@ -1,5 +1,11 @@
 {% extends 'HomeBake/master.html' %}
 
+{% block header %}
+
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+{% endblock %}
+
 {% block content %}
  
 <div class="row">
@@ -7,6 +13,7 @@
       <h3 class="text-danger">Signup Now!</h3>
     </div>
     <div class="col-md-12 d-flex justify-content-center mt-3">
+      {{ msg }}
       <form method="POST">
         {% csrf_token %}
         <table class="form-tb">
@@ -15,7 +22,7 @@
               <label for="seller_name">Seller Name</label>
             </td>
             <td>
-              <input type="text" class="form-control " id="seller_name" name="seller_name">
+              <input type="text" required class="form-control " id="seller_name" name="seller_name">
             </td>
           </tr>
           <tr>
@@ -23,24 +30,35 @@
               <label for="email">Email</label>
             </td>
             <td>
-              <input type="text" class="form-control " name="email" id="email">
+              <input type="text" required class="form-control " name="email" id="email">
+            
+            </td>
+            <td>  <span id="err_email"></span></td>
+          </tr>
+          <tr>
+            <td>
+              <label for="zipcde">Zipcode</label>
+            </td>
+            <td>
+
+              <input type="text" class="form-control " name = "zipcode" id="zipcode" >
             </td>
           </tr>
           <tr>
             <td>
-              <label for="gender">Gender</label>
+              <label for="location">Location</label>
             </td>
-            <td  style="padding: 0px 0px;">
-              <input type="radio" name="gender" value="male"   id="gender"> Male
-              <input type="radio"style="padding: 0px;" value="female" name="gender"   id="gender"> Female
+            <td>
+              <input type="text" class="form-control " name = "location" id="location" >
             </td>
           </tr>
+ 
           <tr>
             <td>
               <label for="phone">Phone No</label>
             </td>
             <td>
-              <input type="text" class="form-control " name="phone" id="phone">
+              <input type="text" required class="form-control " name="phone" id="phone">
             </td>
           </tr>
   
@@ -49,7 +67,7 @@
               <label for="address">Address</label>
             </td>
             <td>
-            <textarea name="address" class="form-control" id="" cols="30" rows="5"></textarea>
+            <textarea name="address" required class="form-control" id="" cols="30" rows="5"></textarea>
             </td>
           </tr>
   
@@ -59,7 +77,7 @@
   
             <td>
   
-              <button type="submit" class="btn btn-primary w-50">Signup </button>
+              <button type="submit" id="btn-reg" class="btn btn-primary w-50">Signup </button>
             </td>
           </tr>
   
@@ -68,4 +86,44 @@
       </form>
     </div>
   </div>
+
+
+  <script>
+    $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()  //passing csrf token in ajax request
+        }
+    })
+
+
+    $('#email').change(function(){
+
+      $.ajax({
+        url: "{% url 'home_bake:check_seller_email' %}",
+        method: 'POST',
+        data: {
+          email: $(this).val()
+        },
+        success: function(response){
+          console.log(response)
+          let status = response.status
+
+          if(status == true){
+            $('#err_email').css('color','red')
+            $('#err_email').html('Email Exists')
+            $('#btn-reg').attr('disabled','true')
+             
+          }
+          else{
+            $('#err_email').html('')
+            $('#btn-reg').removeAttr('disabled')
+          }
+        }
+      })
+    })
+
+  })
+
+  </script>
 {% endblock %}

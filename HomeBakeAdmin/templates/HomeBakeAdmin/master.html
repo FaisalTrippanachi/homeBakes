@@ -22,6 +22,8 @@
       <link href="{% static 'HomeBakeAdmin/css/custom_style.css' %}" rel="stylesheet">
       <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+      {% block header%}
+      {% endblock %}
    </head>
    <body>
       <header id="header" class="header fixed-top d-flex align-items-center">
@@ -165,10 +167,10 @@
       </header>
       <aside id="sidebar" class="sidebar">
          <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item"> <a class="nav-link " href="index.html"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
+            <li class="nav-item"> <a class="nav-link " href="{% url 'HomeBakeAdmin:dashboard' %}"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
             <li class="nav-heading">Seller</li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>Pending Request</span> </a></li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Approved Sellers</span> </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'HomeBakeAdmin:sellers_list' 'pending' %}"> <i class="bi bi-person"></i> <span>Pending Request</span> </a></li>
+            <li class="nav-item"> <a class="nav-link " href="{% url 'HomeBakeAdmin:sellers_list' 'active' %}"> <i class="bi bi-question-circle"></i> <span>Approved Sellers</span> </a></li>
             
             <li class="nav-heading">Customers</li>
             <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>Customers List </span> </a></li>

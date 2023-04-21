@@ -1,6 +1,12 @@
 {% extends 'HomeBake/master.html' %}
 {% load static %}
 
+{% block header %}
+
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col-md-12 text-center mt-5">
@@ -19,6 +25,24 @@
             <input type="text" class="form-control " name = "customer_name" id="c_name" aria-describedby="emailHelp">
           </td>
         </tr>
+
+        <tr>
+          <td>
+            <label for="zipcde">Zipcode</label>
+          </td>
+          <td>
+            <input type="text" class="form-control " name = "zipcode" id="zipcode" >
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="location">Location</label>
+          </td>
+          <td>
+            <input type="text" class="form-control " name = "location" id="location" >
+          </td>
+        </tr>
+
         <tr>
           <td>
             <label for="email">Email</label>
@@ -26,6 +50,8 @@
           <td>
             <input type="text" name = "email" class="form-control" id="email">
           </td>
+          <td>  <span id="err_email"></span></td>
+
         </tr>
          
         <tr>
@@ -76,4 +102,43 @@
     </form>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+  $.ajaxSetup({
+      headers: {
+          "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()  //passing csrf token in ajax request
+      }
+  })
+
+
+  $('#email').change(function(){
+
+    $.ajax({
+      url: "{% url 'home_bake:check_seller_email' %}",
+      method: 'POST',
+      data: {
+        email: $(this).val()
+      },
+      success: function(response){
+        console.log(response)
+        let status = response.status
+
+        if(status == true){
+          $('#err_email').css('color','red')
+          $('#err_email').html('Email Exists')
+          $('#btn-reg').attr('disabled','true')
+           
+        }
+        else{
+          $('#err_email').html('')
+          $('#btn-reg').removeAttr('disabled')
+        }
+      }
+    })
+  })
+
+})
+
+</script>
 {% endblock %}

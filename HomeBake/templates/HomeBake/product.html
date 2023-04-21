@@ -1,4 +1,37 @@
 {% extends 'HomeBake/master.html' %}
+{% load static %}
+{% block header %}
+
+<style>
+    .product-list{
+        max-height: 400px;
+        min-height: 400px;
+    }
+
+    .product-list img{
+        max-height: 200px;
+        min-height: 200px;
+    }
+
+    .p-type{
+        color:red;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .product-name{
+        color:brown;
+        font-weight: bolder;
+        font-size: 24px;
+    }
+    .p-price{
+        color:green;
+        font-weight: bold;
+        font-size: 24px;
+    }
+</style>
+
+{% endblock %}
 
 {% block content %}
 
@@ -16,7 +49,7 @@
 
 
 
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-start mt-4">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
@@ -40,75 +73,30 @@
 
 
         <div class="row" style="margin-top:50px;">
+            {% for product in products %}
 
             <div class="col-md-4 ">
                 
-                <div class="card" style="width: 18rem;">
+                <div class="card product-list" style="width: 18rem;">
                     <img class="card-img-top"
-                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
-                        alt="Card image cap">
+                        src="http://127.0.0.1:8000/media/{{ product.image }}" alt="{{ product.product_name }}">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                            <a href="{% url 'home_bake:product_details' %}" class="btn btn-primary">View Details</a>
+                        <h5 class="card-title product-name">{{ product.product_name | upper }}</h5>
+                        <p class="card-title p-type">Type : {{ product.category | title }}</p>
+                        <p class="p-price"> Price : Rs {{ product.price }}</p>
+                         
+                            <a href="{% url 'home_bake:product_details' product.id %}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
+              
             </div>
              
-            <div class="col-md-4 ">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top"
-                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+           
 
-            <div class="col-md-4 py-md-2 px-md-2 ">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top"
-                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top"
-                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top"
-                        src="https://wildflourskitchen.com/wp-content/uploads/2015/05/chocolate-bday-cake.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+             
+            
+            
 
         </div>
 

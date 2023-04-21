@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Foodappproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'homebake',
+        'NAME': 'homebake_db',
         'USER': 'postgres',
         'PASSWORD' : 'root',
         'HOST': 'localhost',

@@ -1,0 +1,94 @@
+{% extends 'HomeBakeAdmin/master.html' %}
+{% load static %}
+
+
+ {% block header%}
+
+ <link rel="stylesheet" href="{% static 'HomeBakeAdmin/css/custom.css' %}">
+ {% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12 mt-3">
+      {% if status == 'active' %}
+        <h3 class="text-center text-success">Registered Sellers</h3>
+
+        {% else %}
+        <h3 class="text-center text-success">New Sellers</h3>
+
+        {% endif %}
+    </div>
+    <div class="col-md-12" style="min-height: 500px;">
+        {% if sellers %}
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Sl No</th>
+                <th scope="col">Seller Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Address</th>
+                <th></th>
+
+                
+              </tr>
+            </thead>
+            <tbody>
+              {% for seller in sellers %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ seller.seller_name | title}}</td>
+                <td>{{ seller.email }}</td>
+                <td>{{ seller.phone }}</td>
+                <td>{{ seller.address }} </td>
+                {% if status == 'pending' %}
+                <td>
+                  <a class="btn btn-success" href="{% url 'HomeBakeAdmin:approve_Sellers' seller.id %}">Approve</a>
+                   <a class="btn btn-danger" href="">Reject</a> 
+                  </td>
+                  {% endif %}
+                
+              </tr>
+              {% endfor %}
+               
+            </tbody>
+           
+          </table>
+
+        {% else %}
+
+        <span class="no-data"> No Data Found </span>
+
+        {% endif %}
+
+    </div>
+    {% if sellers %}
+    <div class="col-md-12">
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+           </div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}

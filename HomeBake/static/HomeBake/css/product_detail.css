@@ -2,6 +2,13 @@
     font-weight: 800;
 }
 
+.product-list{
+    max-height: 400px;
+}
+.product-list img{
+    max-height: 200px;
+    min-height: 200px;
+}
 text-color {
     color: #0093c4;
 }
