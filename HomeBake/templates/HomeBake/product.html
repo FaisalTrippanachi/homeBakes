@@ -7,7 +7,12 @@
         max-height: 460px;
         min-height: 460px;
     }
-
+    .empty-cart {
+        font-size: 30px;
+        color: red;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
     .product-list img{
         max-height: 200px;
         min-height: 200px;
@@ -29,21 +34,25 @@
         font-weight: bold;
         font-size: 24px;
     }
+    .no-data{
+        color:red;
+        font-weight: bold;
+        font-size: 25px;
+
+    }
 </style>
 
 {% endblock %}
 
 {% block content %}
 
+
+
 <section id="" data-aos="fade-up" data-aos-duration="1500">
     <div class="container">
         <form  method="POST">
             {% csrf_token %}
         <div class="d-flex align-items-baseline justify-content mt-5">
-            <!-- <select name="category" id="" class="form-control mr-2" style="height: 43px; width: 50%; ">
-                <option value="foam cake">Foam Cake</option>
-                <option value="butte cake">Butter Cake</option>
-            </select> -->
             
             <input type="search" name = "search_text" placeholder="search by zipcode or location"   class="form-control mr-2" id="">
             <input type="submit" value="search" style="width:123px" class="btn btn-danger" name="" id="">
@@ -54,7 +63,7 @@
 
          
 
-
+    {% if products %}
         <div class="row" style="margin-top:50px;">
             {% for product in products %}
 
@@ -67,6 +76,7 @@
                         <h5 class="card-title product-name">{{ product.product_name | upper }}</h5>
                         <p class="card-title p-type">Type : {{ product.category | title }}</p>
                         <p class="p-price"> Price : Rs {{ product.price }}</p>
+                        <p>Status : {% if product.status == 'available' %} <span style="color:green">{{ product.status }} {% else %}<span style="color:red">{{ product.status }} {% endif %}</span> </p>
                         <p>Location : {{ product.seller.location }}</p>
                          
                             <a href="{% url 'home_bake:product_details' product.id %}" class="btn btn-primary">View Details</a>
@@ -85,13 +95,21 @@
         </div>
 
 
-
+        {% else %}
+        <div class="d-flex justify-content-center">
+            <p class="no-data">No Items Found....</p>
+        </div>
+        
+        {% endif %}
 
 
 
 
     </div>
 </section>
+
+
+
 
 
 

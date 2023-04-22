@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.db.models import Sum,F
 from django.core.paginator import Paginator
 from datetime import date
+from datetime import datetime,timedelta
 import random
 
 import razorpay
@@ -122,7 +123,7 @@ def login(request, user_type):
             except Exception as e:
                 print(e)
                 msg ='invalid email or password'    
-        else:
+        elif user_type == 'seller':
             try:
                 seller = Seller.objects.get(username = username, password = password)
                 request.session['seller']=seller.id
@@ -134,8 +135,16 @@ def login(request, user_type):
                 return redirect('seller:dashboard')
             except:
                 msg ='invalid email or password'    
-        return render(request, 'HomeBake/login.html', {'msg': msg})
         
+        else:
+            try:
+                admin = Admin.objects.get(user_id = username, password = password)
+                request.session['admin']= admin.id
+                return redirect('HomeBakeAdmin:dashboard')
+            except:
+                msg ='invalid email or password'    
+        return render(request, 'HomeBake/login.html', {'msg': msg})
+
     return render(request, 'HomeBake/login.html')
 
 def seller_login(request):
@@ -145,16 +154,17 @@ def about(request):
     return render(request,'HomeBake/about.html')
 
 def product(request):
-    products = Product.objects.all()
+    
     
     if request.method == 'POST':
         
         search_text = request.POST['search_text']
-        search_result = Product.objects.filter(Q(seller__zipcode = search_text) | Q(seller__location = search_text))
-        
-        return render(request,'HomeBake/product.html', {'products': search_result})
+        if search_text != '':
+            search_result = Product.objects.filter(Q(seller__zipcode = search_text) | Q(seller__location = search_text))
+            
+            return render(request,'HomeBake/product.html', {'products': search_result})
     
-   
+    products = Product.objects.all()
     return render(request,'HomeBake/product.html', {'products': products})
   
 def contact(request):
@@ -213,7 +223,7 @@ def product_details(request,id):
 
         else:
             request.session['product_url'] = 'http://127.0.0.1:8000/product/'+str(id)
-            print(request.session['cart_item'])
+            # print(request.session['cart_item'])
             return redirect('home_bake:login','customer')
 
     product = Product.objects.get(id = id)
@@ -231,22 +241,54 @@ def my_cart(request):
     return render(request,'HomeBake/my_cart.html',)
 
 def order_items(request):
+    
     delivery_date = request.POST['delivery_date']
     shipping_address = request.POST['shipping_address']
-    cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
-    print(cart_items)
-    for item in cart_items:
-        item.delivery_date = delivery_date
-        order_no = 'OD' + str(random.randint(1111111111,9999999999))
+    print('delivery date', delivery_date)
+    selected_date = datetime.strptime(delivery_date, "%Y-%m-%d").date()
+    # print(selected_date.date())
+    current_date = date.today()
+    status_code = 0
+    print('selected date', selected_date)
+    print('current date', current_date)
+    # print(date.today(),'today')
+    # s= date.today()
+    min_expected= current_date + timedelta(days = 3)
+    # print('minimum expecetd', min_expected)
+    # print(selected_date >= min_expected,'exp tru')
+    # print(selected_date <= current_date,'min date')
+    if  selected_date >= min_expected:
+        if  selected_date >= min_expected:
+             
 
-        item.order_no = order_no
-        item.status = 'order placed'
-        item.save()
 
-    # Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
-    #                                                                       status = 'order placed')
-    Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
-    return JsonResponse({'status': 'Order Placed'})
+            cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
+            print(cart_items)
+            for item in cart_items:
+                item.delivery_date = delivery_date
+                order_no = 'OD' + str(random.randint(1111111111,9999999999))
+
+                item.order_no = order_no
+                item.status = 'order placed'
+                status_code = 201
+                item.save()
+                
+
+            Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
+                                                                                  status = 'order placed')
+            Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
+            return JsonResponse({'status': 'Order Placed', 'status_code': status_code})
+        else:
+            status_code = 403
+            return JsonResponse({'status': 'Invalid Date Selection','status_code': status_code})
+
+    else:
+        status_code = 403
+        return JsonResponse({'status': 'Invalid Date Selection', 'status_code': status_code})
+        
+
+     
+    
 def remove_cart(request,id):
     item = Cart.objects.get(id = id)
     item.delete()
@@ -255,12 +297,14 @@ def my_account(request):
     return render(request,'HomeBake/account.html')
 
 def my_orders(request):
-    order_list = Cart.objects.filter(customer = request.session['customer'])
+    if 'customer' in request.session:
+        order_list = Cart.objects.filter(customer = request.session['customer'])
 
-    p = Paginator(order_list, 2) 
-    page_number = request.GET.get('page')
-    order_obj = p.get_page(page_number)
-    return render(request,'HomeBake/my_orders.html',{'order_list': order_obj})
+        p = Paginator(order_list, 2) 
+        page_number = request.GET.get('page')
+        order_obj = p.get_page(page_number)
+        return render(request,'HomeBake/my_orders.html',{'order_list': order_obj})
+    return render(request,'HomeBake/my_orders.html')
 
 def payment(request):
     if request.method == "POST":
@@ -311,5 +355,5 @@ def change_password(request):
 
 
         except:
-            status_msg = 'old pss not match'
+            status_msg = 'Incorrect Password'
     return render(request, 'HomeBake/change_password.html', {'msg': status_msg})

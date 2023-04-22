@@ -18,7 +18,8 @@ urlpatterns = [
     path('update/work-status/<str:status>/<int:id>',views.update_work_status,name='update_work_status'),
 
     path('logout',views.logout,name='logout'),
-    path('sales/report',views.sales_report,name='sales_report'),
+    path('edit/product/<int:id>',views.edit_product,name='edit_product'),
+
 
     path('password/change',views.change_password,name='change_password'),
 

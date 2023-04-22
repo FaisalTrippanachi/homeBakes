@@ -1,8 +1,13 @@
 {% extends 'Sellers/master.html' %}
 {% load static %}
 
-
- 
+    {% block header %}
+    <style>
+        a{
+            color: black;
+        }
+    </style>
+    {% endblock %}
 
 
 {% block content %}
@@ -13,36 +18,43 @@
             <div class="cardBox">
                 <div class="card">
                     <div>
-                        <div class="numbers">{{ customer_count }}</div>
+                        <a href="{% url 'seller:order_list' 1 %}">
                         <div class="cardName">New Orders</div>
+                        <div class="numbers">
+                            {{ new_order_count }} {% if new_order_count == 0 %} <span>No</span> {% else %} No{{ new_order_count | pluralize }} {% endif %}
+                        </div>
+                        </a>
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="people-outline"></ion-icon>
-                        
-                    </div>
+                   
                 </div>
 
                 <div class="card">
                     <div>
-                        <div class="numbers">{{ product_count }}</div>
+                        <a href="{% url 'seller:order_list' 2 %}">
                         <div class="cardName">Pending Works</div>
+                        <div class="numbers">
+                            {{ pending_order_count }} {% if pending_order_count == 0 %} <span>No</span> {% else %} No{{ pending_order_count | pluralize }} {% endif %}
+                        </div>
+                    </a>
+                       
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="cart-outline"></ion-icon>
-                    </div>
+                    
                 </div>
 
                 <div class="card">
                     <div>
-                        <div class="numbers">{{ complaints_count }}</div>
-                        <div class="cardName">Total Orders</div>
+                        <a href="{% url 'seller:order_list' 3 %}">
+                        <div class="numbers">
+                        <div class="cardName">History</div>
+
+                            {{ all_order_count }} {% if all_order_count == 0 %} <span>No</span> {% else %} No{{ all_order_count | pluralize }} {% endif %}
+                        </div>
+                        </a>
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="chatbubbles-outline"></ion-icon>
-                    </div>
+                    
                 </div>
 
                  
