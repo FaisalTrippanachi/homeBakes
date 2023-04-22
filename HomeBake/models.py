@@ -3,6 +3,12 @@ from datetime import date
  
 # Create your models here.
 
+class Admin(models.Model):
+    user_id = models.CharField(max_length = 30, default = 'admin@123')
+    password = models.CharField(max_length = 50, default = 'admin')
+
+    class Meta:
+        db_table = 'admin_tb'
 
 class Seller(models.Model):
     seller_name = models.CharField(max_length = 30)

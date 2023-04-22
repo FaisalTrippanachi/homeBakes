@@ -1,0 +1,84 @@
+{% extends 'Sellers/master.html' %}
+{% load static %}
+
+
+
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h3 class="text-danger">Edit Product</h3>
+    </div>
+    <div class="col-md-12 d-flex justify-content-center mt-3">
+        {{ msg }}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="form-tb">
+                <tr>
+                    <td>
+                        <label for="product_name">Product Name</label>
+                    </td>
+                    <td>
+                        <input type="text" required class="form-control" value = "{{ item.product_name }}" name="product_name" id="product_name">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="category">Category</label>
+                    </td>
+                    <td>
+                        <select class="form-control" required name="category" id="category">
+                             
+                            <option value="butter cake">Butter Cake</option>
+                            <option value="foam cake">Foam Cake</option>
+                        </select>
+                    </td>
+                </tr>
+                 
+                <tr>
+                    <td>
+                        <label for="price">Price (per kg)</label>
+                    </td>
+                    <td>
+                        <input type="number" value="{{ item.price }}" required min="1" class="form-control " name="price" id="price">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ingredients">Ingredients Used</label>
+                    </td>
+                    <td>
+                        <textarea name="ingredients" required id="ingredients" class="form-control" id="" cols="30" rows="5">{{ item.ingredients_used }}</textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="pic">Upload Picture</label>
+                    </td>
+                    <td>
+                        <input type="file"  class="form-control" name="pic" accept="image/*">
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+
+                    <td  >
+
+                        <input type="submit" class="btn btn-primary w-50" value="Add Product">
+                    </td>
+                </tr>
+
+
+            </table>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+ 

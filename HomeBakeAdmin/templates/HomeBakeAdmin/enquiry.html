@@ -48,10 +48,11 @@
             <thead>
               <tr>
                 <th scope="col">Sl No</th>
-                <th scope="col">Seller Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">User Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone No</th>
-                <th scope="col">Address</th>
+                <th scope="col">Enquiry</th>
                 <th></th>
 
                 
@@ -61,6 +62,8 @@
               {% for item in records %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
+                <th scope="row">{{ item.date }}</th>
+
                 <td>{{ item.customer_name | title}}</td>
                 <td>{{ item.email }}</td>
                 <td>{{ item.phone }}</td>

@@ -61,7 +61,7 @@
 
               {% endif %}
               <div class="d-flex justify-content-around">
-                <a href="" style="width: 100px;" class="btn btn-primary">Edit</a>
+                <a href="{% url 'seller:edit_product' product.id %}" style="width: 100px;" class="btn btn-primary">Edit</a>
                 <a href="{% url 'seller:change_product_status' product.id %}" style="width: 120px;" class="btn btn-danger">Out of stock</a>
               </div>
             </div>
