@@ -3,7 +3,12 @@ from django.http import HttpResponse,JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import *
-from django.db.models import Sum
+from django.db.models import Q
+from django.db.models import Sum,F
+from django.core.paginator import Paginator
+from datetime import date
+import random
+
 import razorpay
 
 # Create your views here.
@@ -140,11 +145,51 @@ def about(request):
     return render(request,'HomeBake/about.html')
 
 def product(request):
-    products = Product.objects.all().values('id','product_name','category','image','status','seller', 'price')
+    products = Product.objects.all()
+    
+    if request.method == 'POST':
+        
+        search_text = request.POST['search_text']
+        search_result = Product.objects.filter(Q(seller__zipcode = search_text) | Q(seller__location = search_text))
+        
+        return render(request,'HomeBake/product.html', {'products': search_result})
+    
+   
     return render(request,'HomeBake/product.html', {'products': products})
   
 def contact(request):
-    return render(request,'HomeBake/contact.html')
+    status_msg = ""
+    # for i in range(0,20):
+    #     CustomerContact(
+    #         customer_name = 'test'+str(i),
+    #         email = 'test@gmail.com',
+    #         phone = '889988888',
+    #         message = 'loreeefhuuf rfrifrf iurf eripr3f rfeffkj',
+    #         date = '2023-04-22'
+            
+    #     ).save()
+
+
+    if request.method == 'POST':
+
+        name = request.POST['name'].lower()
+        email = request.POST['email']
+        phone = request.POST['phone']
+        message = request.POST['message']
+        contact_date = date.today()
+
+        contact = CustomerContact(
+            customer_name = name,
+            email = email,
+            phone = phone,
+            message = message,
+            date = contact_date
+            
+        )
+
+        contact.save()
+        status_msg = 'Message Sent Succesfully'
+    return render(request,'HomeBake/contact.html',{'msg': status_msg})
 
 def product_details(request,id):
     status_msg = ''
@@ -156,7 +201,7 @@ def product_details(request,id):
             price = request.POST['p_price']
             qty = request.POST['cart_qty']
 
-            cart_exist = Cart.objects.filter(product = id, customer = request.session['customer']).exists()
+            cart_exist = Cart.objects.filter(product = id, customer = request.session['customer'], status = 'pending').exists()
             if not cart_exist:
                 cart = Cart(customer_id = request.session['customer'],
                             price = price, qty = qty, product_id = id)
@@ -176,11 +221,32 @@ def product_details(request,id):
     return render(request,'HomeBake/product_details.html',{'product': product, 'msg': status_msg})
 
 def my_cart(request):
-    cart_items = Cart.objects.filter(customer = request.session['customer'])
-    total = Cart.objects.filter(customer = request.session['customer']).aggregate(Sum('price'))
-    customer = Customer.objects.get(id = request.session['customer'])
-    return render(request,'HomeBake/my_cart.html',{'cart_items': cart_items,'total': total['price__sum'], 'customer': customer})
+    if 'customer' in request.session:
+        cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
+        if cart_items:
+            sum_total = Cart.objects.filter(customer = request.session['customer'], status = 'pending').aggregate(total =Sum(F('qty') * F('price')))
+            customer = Customer.objects.get(id = request.session['customer'])
+            print('summmm',sum_total)
+            return render(request,'HomeBake/my_cart.html',{'cart_items': cart_items,'total': sum_total['total'], 'customer': customer})
+    return render(request,'HomeBake/my_cart.html',)
 
+def order_items(request):
+    delivery_date = request.POST['delivery_date']
+    shipping_address = request.POST['shipping_address']
+    cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
+    print(cart_items)
+    for item in cart_items:
+        item.delivery_date = delivery_date
+        order_no = 'OD' + str(random.randint(1111111111,9999999999))
+
+        item.order_no = order_no
+        item.status = 'order placed'
+        item.save()
+
+    # Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
+    #                                                                       status = 'order placed')
+    Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
+    return JsonResponse({'status': 'Order Placed'})
 def remove_cart(request,id):
     item = Cart.objects.get(id = id)
     item.delete()
@@ -189,7 +255,12 @@ def my_account(request):
     return render(request,'HomeBake/account.html')
 
 def my_orders(request):
-    return render(request,'HomeBake/my_orders.html')
+    order_list = Cart.objects.filter(customer = request.session['customer'])
+
+    p = Paginator(order_list, 2) 
+    page_number = request.GET.get('page')
+    order_obj = p.get_page(page_number)
+    return render(request,'HomeBake/my_orders.html',{'order_list': order_obj})
 
 def payment(request):
     if request.method == "POST":
@@ -209,3 +280,36 @@ def payment(request):
          
          
         return JsonResponse(payment)
+
+def logout(request):
+    del request.session['customer']
+    request.session.flush()
+    return redirect('home_bake:customer_home')
+
+def change_password(request):
+    status_msg = ''
+    if request.method  == 'POST':
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        try:
+            if len(new_password) > 8:
+                if new_password == confirm_password:
+                    customer = Customer.objects.get(id = request.session['customer'])
+                    if customer.password == old_password:
+                        customer.password = new_password
+                        customer.save()
+                        status_msg = 'Password Changed'
+
+                    else:
+                        status_msg = 'Password Incorrect'
+                else:
+                    status_msg = 'Password Does Not Match'
+            else:
+                status_msg = 'Password Should Be Minimum 8 Characters'
+
+
+        except:
+            status_msg = 'old pss not match'
+    return render(request, 'HomeBake/change_password.html', {'msg': status_msg})

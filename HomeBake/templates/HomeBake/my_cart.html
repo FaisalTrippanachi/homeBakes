@@ -10,8 +10,19 @@
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+<style>
+    .empty-cart{
+    font-size: 30px;
+    color: red;
+    margin-top: 20px;
+    margin-left: 20px;
+    }
+</style>
 {% endblock %}
 {% block content %}
+
+{% if request.session.customer %}
 <div class=" container-fluid my-5 ">
     <div class="row justify-content-center ">
         <div class="col-xl-10">
@@ -44,14 +55,14 @@
                                 
                                 <div class="form-group">
                                     <label for="NAME" class="small text-muted mb-1">Delivery Date</label>
-                                    <input type="date" class="form-control form-control-sm" >
+                                    <input type="date" name="delivery_date" id="delivery_date" class="form-control form-control-sm" >
                                 </div>
                                 
                                  
 
                                 <div class="form-group">
                                     <label for="NAME" class="small text-muted mb-1">Address</label>
-                                    <textarea name="address" class="form-control" id="" cols="30" rows="5"> {{ customer.address }}</textarea>
+                                    <textarea name="shipping_address" class="form-control" id="shipping_address" cols="30" rows="5"> {{ customer.address }}</textarea>
                                 </div>
                                 
                                 
@@ -59,7 +70,11 @@
                             </div>
                         </div>
                         <div class="row mb-5 mt-4 ">
-                            <div class="col-md-7 col-lg-6 mx-auto"><button type="button" id="rzp-button1" class="btn  btn-lg btn-block ">Checkout</button></div>
+                            <div class="col-md-7 col-lg-6 mx-auto">
+                                {% if cart_items %}
+                                <button type="button" id="rzp-button1" class="btn  btn-lg btn-block ">Checkout</button>
+                                {% endif %}
+                                </div>
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -70,6 +85,8 @@
                                 <hr class="my-2">
                             </div>
                             <div class="card-body pt-0">
+
+                                {% if cart_items %}
                                 
                                 {% for item in cart_items %}
                                 <div class="row  justify-content-between">
@@ -84,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed"> {{ item.qty }} Kg</p></div>
-                                    <div class="pl-0 flex-sm-col col-auto my-auto"><p><b> Rs {{ item.product.price }}</b></p></div>
+                                    <div class="pl-0 flex-sm-col col-auto my-auto"><p><b> Rs {{ item.product_total }}</b></p></div>
 
                                     <div class="pl-0 flex-sm-col col-auto my-auto"><p><b><a href="{% url 'home_bake:remove_cart' item.id %}"> <i class="bi bi-trash text-danger bi-2x"></i> </a></b></p></div>
 
@@ -114,6 +131,9 @@
                                 </div>
                                 <div class="row mb-5 ">
                                 </div>
+                                    {% else %}
+                                    <p class="empty-cart">Cart Empty</p>
+                                {% endif %}
                                 
                             </div>
                         </div>
@@ -125,6 +145,12 @@
 </div>
 
 
+{%  else %}
+
+<h3>Login to view your cart</h3>
+
+{% endif %}
+
 <script>
     $(document).ready(function () {
     $.ajaxSetup({
@@ -135,53 +161,34 @@
   
   
     $('#rzp-button1').click(function(){
-            // console.log("inside funtion")
-            amount=$("#total").html()
-            console.log(amount)
+             console.log($('#shipping_address').val() != '' && $('#delivery_date').val() != '')
+             console.log($('#shipping_address').val() ,$('#delivery_date').val() )
+
+        if($('#shipping_address').val() != '' && $('#delivery_date').val() != '')
+        {
+            alert('dcbj')
             $.ajax({
-                url:'{% url "home_bake:payment" %}',
+                url:'{% url "home_bake:order_items" %}',
                 type:'POST',
+
+                data:{
+                    'shipping_address': $('#shipping_address').val(),
+                    'delivery_date': $('#delivery_date').val()
+                },
                  
                 success:function(response){
-                    console.log("payment_id="+response.id);
-                    var options={
-                        "key":"rzp_test_AkXK2BPZBLRHG6",
-                        "grandtotal":response.amount,
-                        "currency":"INR",
-                        "name":"men cub",
-                        "id":"1234",
-                        "order_id":response.id,
-                        "handler":function(response){
-                            console.log('handler')
-                            console.log("pid",response.razorpay_payment_id);
-                            console.log("oid",response.razorpay_order_id);
-                            console.log("sig",response.razorpay_signature)
-                            paymentId = response.razorpay_payment_id
-                            orderId = response.razorpay_order_id
-                            signId = response.razorpay_signature 
-                            updatepayment(paymentId,orderId,signId,response.amount)
-                        },
-                        redirect: true,
-
-                        "theme":{
-                            "color":"#3399cc"
-                        }
-                
-                        };
-                        var rzpl=new Razorpay(options);
-                        rzpl.on('payment.failed',function(response){
-                            alert(response.error.code);
-                            alert(response.error.description);
-                            alert(response.error.source);
-                            alert(response.error.step);
-                            alert(response.error.reason);
-                            alert(response.error.metadata.payment_id);
-                        });
-                        rzpl.open();
+                    
+                    console.log(response.status);
 
                     }
                 
             })
+        }
+
+        else{
+            window.alert('Please Fill Checkout Form')
+        }
+            
 
         })
   

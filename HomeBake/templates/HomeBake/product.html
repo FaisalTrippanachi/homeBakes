@@ -4,8 +4,8 @@
 
 <style>
     .product-list{
-        max-height: 400px;
-        min-height: 400px;
+        max-height: 460px;
+        min-height: 460px;
     }
 
     .product-list img{
@@ -37,39 +37,22 @@
 
 <section id="" data-aos="fade-up" data-aos-duration="1500">
     <div class="container">
-
+        <form  method="POST">
+            {% csrf_token %}
         <div class="d-flex align-items-baseline justify-content mt-5">
-            <select name="" id="" class="form-control mr-2" style="height: 43px; width: 160px; ">
-                <option value="">Eggless Cake</option>
-            </select>
-            <input type="search" placeholder="search by zipcode" style="width: 50%;" class="form-control mr-2" name=""
-                id="">
-            <input type="submit" value="search" class="btn btn-danger" name="" id="">
+            <!-- <select name="category" id="" class="form-control mr-2" style="height: 43px; width: 50%; ">
+                <option value="foam cake">Foam Cake</option>
+                <option value="butte cake">Butter Cake</option>
+            </select> -->
+            
+            <input type="search" name = "search_text" placeholder="search by zipcode or location"   class="form-control mr-2" id="">
+            <input type="submit" value="search" style="width:123px" class="btn btn-danger" name="" id="">
+        
         </div>
 
+    </form>
 
-
-        <div class="d-flex justify-content-start mt-4">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+         
 
 
         <div class="row" style="margin-top:50px;">
@@ -79,11 +62,12 @@
                 
                 <div class="card product-list" style="width: 18rem;">
                     <img class="card-img-top"
-                        src="http://127.0.0.1:8000/media/{{ product.image }}" alt="{{ product.product_name }}">
+                        src="{{ product.image.url }}" alt="{{ product.product_name }}">
                     <div class="card-body">
                         <h5 class="card-title product-name">{{ product.product_name | upper }}</h5>
                         <p class="card-title p-type">Type : {{ product.category | title }}</p>
                         <p class="p-price"> Price : Rs {{ product.price }}</p>
+                        <p>Location : {{ product.seller.location }}</p>
                          
                             <a href="{% url 'home_bake:product_details' product.id %}" class="btn btn-primary">View Details</a>
                     </div>

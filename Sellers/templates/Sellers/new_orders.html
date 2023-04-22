@@ -1,73 +1,121 @@
 {% extends 'Sellers/master.html' %}
 {% load static %}
 
+{% block header %}
+<style>
+   th{
+    color: black;
+    background-color: aliceblue;
 
- 
+  }
+  #item-img{
+    border-radius: 60px;
+    width: 60px;
+    height: 60px;
+  }
+  #td{
+    height: 60px;
+    vertical-align: middle;
+  }
+  .no-data{
+    font-size: 25px;
+    color: red;
+    font-weight: bold;
+    margin-top: 120px;
+    margin-left: 260px;
+  }
+</style>
+
+{% endblock %}
 
 
 {% block content %}
 
 <div class="row">
-    <div class="col-md-12 mt-3">
-        <h3 class="text-center text-danger">Recent Orders</h3>
-    </div>
+  <div class="col-md-12 mt-3">
+    <h3 class="text-center text-danger">Recent Orders</h3>
+</div>
+  <div class="col-md-12">
+    <div class="d-flex justify-content-start">
+      {% if orders %}
+      <nav aria-label="Page navigation example" class="nav-p">
+        <ul class="pagination">
+            <li class="page-item">
+                {% if orders.has_previous %}
+                <a class="page-link" href="?page={{orders.previous_page_number}}"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                {% endif %}
+            </li>
+            {% for p in orders.paginator.page_range %}
+            <li class="page-item "><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+            {% endfor %}
+            <!-- <li class="page-item "> Page {{p}} of {{panchayath_list.paginator.page}}</li> -->
+            <li class="page-item">
+                {% if orders.has_next %}
+                <a class="page-link" href="?page={{orders.next_page_number}}"  aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+       </div>
+</div>
+   
     <div class="col-md-12">
+      {% if orders %}
         <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th >Sl No</th>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th  >Order No</th>
+                
+                <th  >Order Date</th>
+                <th  >Qty</th>
+                <th>Delivery Date</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
+               
+              {% for item in orders %}
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td id="td">{{ forloop.counter }}</td>
+                <td id="td"><img id="item-img" src="{{ item.product.image.url }}"  alt="" srcset=""></td>
+                <td id="td">{{ item.product.product_name | title }}</td>
+                <td id="td">{{ item.order_no }}</td>
+                
+                <td id="td"> {{ item.order_date }}</td>
+               
+
+                <td id="td"> {{ item.qty }} Kg  </td>
+                <td id="td">{{ item.delivery_date }}</td>
+                <td id="td">Rs {{ item.price }}</td>
+
+                <td id="td"> Rs {% widthratio item.price 1 item.qty %} </td>
+                <td id="td">{{ item.status }}</td>
+                <td id="td"><a href="{% url 'seller:update_work_status' 'in progress' item.id %}" class="btn btn-success">Work Started</a></td>
+
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {% endfor %}
             </tbody>
            
           </table>
-
+          {% else %}
+          <span class="no-data">No Data Available</span>
+{% endif %}
     </div>
 
-    <div class="col-md-12">
-        <div class="d-flex justify-content-end">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-           </div>
-    </div>
+    
 </div>
 {% endblock %}

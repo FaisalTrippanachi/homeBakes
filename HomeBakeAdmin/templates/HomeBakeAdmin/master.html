@@ -173,8 +173,10 @@
             <li class="nav-item"> <a class="nav-link " href="{% url 'HomeBakeAdmin:sellers_list' 'active' %}"> <i class="bi bi-question-circle"></i> <span>Approved Sellers</span> </a></li>
             
             <li class="nav-heading">Customers</li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="users-profile.html"> <i class="bi bi-person"></i> <span>Customers List </span> </a></li>
-            <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Pending </span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href=""> <i class="bi bi-person"></i> <span>Customers List </span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'HomeBakeAdmin:users_msg' %}"> <i class="bi bi-question-circle"></i> <span>Message </span> </a></li>
+            <li class="nav-item"> <a class="nav-link " href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Pending </span> </a></li>
+
             <li class="nav-item"> <a class="nav-link collapsed" href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>Logout </span> </a></li>
            
          </ul>
