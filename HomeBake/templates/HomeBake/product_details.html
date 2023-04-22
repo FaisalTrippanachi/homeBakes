@@ -42,11 +42,11 @@
               <div class="price-area my-4">
                   
                   <p class="text-bold mb-1  product-price">Rs  {{ product.price }}</p>
-                  <input type="text" name="p_price" value="{{ product.price }}">
+                  <input type="hidden" name="p_price" value="{{ product.price }}">
                   <p class="text-secondary mb-1">(expected to deliver after 3 days of order)</p>
 
               </div>
-
+              <p>Status : {% if product.status == 'available' %} <span style="color:green">{{ product.status }} {% else %}<span style="color:red">{{ product.status }} {% endif %}</span> </p>
 
               <div class="buttons d-flex my-5">
                   
@@ -58,9 +58,17 @@
                   <div class="block">
                     (in kg) 
                 </div>
+                
+                {% if product.status == 'available' %}
                   <div class="block">
-                    <button type="submit" class="shadow btn btn-danger">Add to cart</button>
+                    <button type="submit"  class="shadow btn btn-danger">Add to cart</button>
                 </div>
+
+                {% else %}
+                <div class="block">
+                    <button type="submit" disabled  class="shadow btn btn-danger">Add to cart</button>
+                </div>
+                {% endif %}
                 {{ msg }}
               </div>
 

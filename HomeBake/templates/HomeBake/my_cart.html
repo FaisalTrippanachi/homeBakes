@@ -7,114 +7,169 @@
 
 
 {% block header %}
-<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+<style>
+    .empty-cart {
+        font-size: 30px;
+        color: red;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+</style>
 {% endblock %}
 {% block content %}
+
+{% if request.session.customer %}
 <div class=" container-fluid my-5 ">
     <div class="row justify-content-center ">
         <div class="col-xl-10">
             <div class="card shadow-lg ">
                 <div class="row p-2 mt-3 justify-content-between mx-sm-2">
                     <div class="col">
-                        <p class="  space mb-0 shop"> Customer Name : {{ request.session.customer_name }}</p> 
-                        <p class=" space mb-0 shop">Zipcode : {{ request.session.zipcode }}</p>   
+                        <p class="  space mb-0 shop"> Customer Name : {{ request.session.customer_name }}</p>
+                        <p class=" space mb-0 shop">Zipcode : {{ request.session.zipcode }}</p>
                     </div>
-                    
+
                     <div class="col-auto">
-                        <img class="irc_mi img-fluid bell" src="https://i.imgur.com/uSHMClk.jpg" width="30" height="30"  >
+                        <img class="irc_mi img-fluid bell" src="https://i.imgur.com/uSHMClk.jpg" width="30" height="30">
                     </div>
                 </div>
-                 <p></p>
+                <p></p>
                 <div class="row justify-content-around">
                     <div class="col-md-5">
-                         
+
                         <div class="card border-0">
                             <div class="card-header pb-0">
                                 <h2 class="card-title space ">Checkout</h2>
-                                <p class="card-text   text-danger mt-4" style = "color:red">Fill The Following Details</p>
+                                <p class="card-text   text-danger mt-4" style="color:red">Fill The Following Details</p>
                                 <hr class="my-0">
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-between">
-                                    <div class="col-auto mt-0"><p><b>Note: Items expected to be delivered after 3 days of order placement.</b></p></div>
-                                     
+                                    <div class="col-auto mt-0">
+                                        <p><b>Note: Delivery date should be minimum 3 days from current date.</b></p>
+                                    </div>
+
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="NAME" class="small text-muted mb-1">Delivery Date</label>
-                                    <input type="date" class="form-control form-control-sm" >
+                                    <input type="date" name="delivery_date" id="delivery_date"
+                                        class="form-control form-control-sm">
                                 </div>
-                                
-                                 
+
+
 
                                 <div class="form-group">
                                     <label for="NAME" class="small text-muted mb-1">Address</label>
-                                    <textarea name="address" class="form-control" id="" cols="30" rows="5"> {{ customer.address }}</textarea>
+                                    <textarea name="shipping_address" class="form-control" id="shipping_address"
+                                        cols="30" rows="5"> {{ customer.address }}</textarea>
                                 </div>
-                                
-                                
-                                
+
+
+
                             </div>
                         </div>
                         <div class="row mb-5 mt-4 ">
-                            <div class="col-md-7 col-lg-6 mx-auto"><button type="button" id="rzp-button1" class="btn  btn-lg btn-block ">Checkout</button></div>
+                            <div class="col-md-7 col-lg-6 mx-auto">
+                                {% if cart_items %}
+                                <button type="button" id="rzp-button1" class="btn  btn-lg btn-block ">Checkout</button>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="card border-0 ">
                             <div class="card-header card-2">
-                                <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
-                                
+                                <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER <span
+                                        class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+
                                 <hr class="my-2">
                             </div>
                             <div class="card-body pt-0">
-                                
+
+                                {% if cart_items %}
+
                                 {% for item in cart_items %}
                                 <div class="row  justify-content-between">
                                     <div class="col-auto col-md-7">
                                         <div class="media flex-column flex-sm-row">
-                                            <img class=" img-fluid " src="https://i.imgur.com/9MHvALb.jpg" width="62" height="62">
+                                            <img class=" img-fluid " src="https://i.imgur.com/9MHvALb.jpg" width="62"
+                                                height="62">
                                             <div class="media-body  my-auto">
                                                 <div class="row ">
-                                                    <div class="col"><p class="mb-0"><b>{{ item.product.product_name | upper }}</b></p><small class="text-muted">Seller : {{ item.product.seller.seller_name | title }}</small></div>
+                                                    <div class="col">
+                                                        <p class="mb-0"><b>{{ item.product.product_name | upper }}</b>
+                                                        </p><small class="text-muted">Seller : {{item.product.seller.seller_name | title }}</small>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed"> {{ item.qty }} Kg</p></div>
-                                    <div class="pl-0 flex-sm-col col-auto my-auto"><p><b> Rs {{ item.product.price }}</b></p></div>
+                                    <div class="pl-0 flex-sm-col col-auto  my-auto">
+                                        <p class="boxed"> {{ item.qty }} Kg</p>
+                                    </div>
+                                    <div class="pl-0 flex-sm-col col-auto my-auto">
+                                        <p><b> Rs {{ item.product_total }}</b></p>
+                                    </div>
 
-                                    <div class="pl-0 flex-sm-col col-auto my-auto"><p><b><a href="{% url 'home_bake:remove_cart' item.id %}"> <i class="bi bi-trash text-danger bi-2x"></i> </a></b></p></div>
+                                    <div class="pl-0 flex-sm-col col-auto my-auto">
+                                        <p><b><a href="{% url 'home_bake:remove_cart' item.id %}"> <i
+                                                        class="bi bi-trash text-danger bi-2x"></i> </a></b></p>
+                                    </div>
 
                                 </div>
                                 <hr class="my-2">
-                                 {% endfor %}
-                               
+                                {% endfor %}
+
                                 <div class="row ">
                                     <div class="col">
                                         <div class="row justify-content-between">
-                                            <div class="col-4"><p class="mb-1"><b>Subtotal</b></p></div>
-                                            <div class="flex-sm-col col-auto"><p class="mb-1"><b>Rs {{ total }}</b></p></div>
+                                            <div class="col-4">
+                                                <p class="mb-1"><b>Subtotal</b></p>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p class="mb-1"><b>Rs {{ total }}</b></p>
+                                            </div>
                                         </div>
                                         <div class="row justify-content-between">
-                                            <div class="col"><p class="mb-1"><b>Shipping</b></p></div>
-                                            <div class="flex-sm-col col-auto"><p class="mb-1"><b>Rs 20</b></p></div>
+                                            <div class="col">
+                                                <p class="mb-1"><b>Shipping</b></p>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p class="mb-1"><b>Rs 20</b></p>
+                                            </div>
                                         </div>
                                         <div class="row justify-content-between">
-                                            <div class="col-4"><p ><b>Total</b></p></div>
-                                            <div class="flex-sm-col col-auto"><p  class="mb-1"><b> Rs {{ total|add:20 }}</b></p> </div>
-                                        </div><hr class="my-0">
+                                            <div class="col-4">
+                                                <p><b>Total</b></p>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p class="mb-1"><b> Rs {{ total|add:20 }}</b></p>
+                                            </div>
+                                        </div>
+                                        <hr class="my-0">
                                         <div class="row justify-content-between">
-                                            <div class="col-4"><p ><b>Total</b></p></div>
-                                            <div class="flex-sm-col col-auto"><p  class="mb-1"><b> Rs {{ total|add:20 }}</b></p> </div>
-                                        </div><hr class="my-0">
+                                            <div class="col-4">
+                                                <p><b>Total</b></p>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p class="mb-1"><b> Rs {{ total|add:20 }}</b></p>
+                                            </div>
+                                        </div>
+                                        <hr class="my-0">
                                     </div>
                                 </div>
                                 <div class="row mb-5 ">
                                 </div>
-                                
+                                {% else %}
+                                <p class="empty-cart">Cart Empty</p>
+                                {% endif %}
+
                             </div>
                         </div>
                     </div>
@@ -125,67 +180,65 @@
 </div>
 
 
+{% else %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 400px;">
+    <h3 class="text-danger">Login to view your cart</h3>
+</div>
+
+
+{% endif %}
+
 <script>
     $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRFToken": '{{ csrf_token }}'  //passing csrf token in ajax request
-        }
-    })
-  
-  
-    $('#rzp-button1').click(function(){
-            // console.log("inside funtion")
-            amount=$("#total").html()
-            console.log(amount)
-            $.ajax({
-                url:'{% url "home_bake:payment" %}',
-                type:'POST',
-                 
-                success:function(response){
-                    console.log("payment_id="+response.id);
-                    var options={
-                        "key":"rzp_test_AkXK2BPZBLRHG6",
-                        "grandtotal":response.amount,
-                        "currency":"INR",
-                        "name":"men cub",
-                        "id":"1234",
-                        "order_id":response.id,
-                        "handler":function(response){
-                            console.log('handler')
-                            console.log("pid",response.razorpay_payment_id);
-                            console.log("oid",response.razorpay_order_id);
-                            console.log("sig",response.razorpay_signature)
-                            paymentId = response.razorpay_payment_id
-                            orderId = response.razorpay_order_id
-                            signId = response.razorpay_signature 
-                            updatepayment(paymentId,orderId,signId,response.amount)
-                        },
-                        redirect: true,
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'  //passing csrf token in ajax request
+            }
+        })
 
-                        "theme":{
-                            "color":"#3399cc"
+
+        $('#rzp-button1').click(function () {
+            console.log($('#shipping_address').val() != '' && $('#delivery_date').val() != '')
+            console.log($('#shipping_address').val(), $('#delivery_date').val())
+
+            if ($('#shipping_address').val() != '' && $('#delivery_date').val() != '') {
+
+
+                
+
+                $.ajax({
+                    url:'{% url "home_bake:order_items" %}',
+                    type:'POST',
+
+                    data:{
+                        'shipping_address': $('#shipping_address').val(),
+                        'delivery_date': $('#delivery_date').val()
+                    },
+
+                    success:function(response){
+
+                        let status = response.status
+                        let statusCode = response.status_code 
+                        alert(status)
+
+                        if(statusCode == 201){
+                            window.location.href = "{% url 'home_bake:customer_home' %}"
+
                         }
-                
-                        };
-                        var rzpl=new Razorpay(options);
-                        rzpl.on('payment.failed',function(response){
-                            alert(response.error.code);
-                            alert(response.error.description);
-                            alert(response.error.source);
-                            alert(response.error.step);
-                            alert(response.error.reason);
-                            alert(response.error.metadata.payment_id);
-                        });
-                        rzpl.open();
+                        }
 
-                    }
-                
-            })
+                })
+            }
+
+            else {
+                window.alert('Please Fill Checkout Form')
+            }
+
 
         })
-  
-  })
-  
-  </script>
+
+    })
+
+</script>
 {% endblock %}

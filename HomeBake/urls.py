@@ -14,14 +14,18 @@ urlpatterns = [
 
     path('seller/register',views.seller_register,name='seller_register'),
     path('login/<str:user_type>',views.login,name='login'),
+    path('logout',views.logout,name='logout'),
     
     path('contact',views.contact,name='contact'),
+    path('password/change',views.change_password,name='change_password'),
+
     path('customer/pay',views.payment,name='payment'),
 
     path('product/<int:id>',views.product_details,name='product_details'),
     path('cart',views.my_cart,name='cart'),
     path('account',views.my_account,name='account'),
     path('cart/remove/<int:id>',views.remove_cart,name='remove_cart'),
+    path('cart/items/order',views.order_items,name='order_items'),
 
     path('orders',views.my_orders,name='my_orders')
 ]
