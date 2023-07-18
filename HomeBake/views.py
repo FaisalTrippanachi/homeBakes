@@ -9,13 +9,27 @@ from django.core.paginator import Paginator
 from datetime import date
 from datetime import datetime,timedelta
 import random
-
+import stripe
 import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+import json
+
 
 # Create your views here.
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+YOUR_DOMAIN = 'http://127.0.0.1:8000'
+
 def home(request):
     return render(request,'HomeBake/home.html')
+
+def payment_page(request):
+    amount = 200
+    return render(request, 'HomeBake/payment.html', {'amount': amount})
+
+def thanks(request):
+    return render(request, 'thanks.html')
 
 def customer_register(request):
     if request.method == 'POST':
@@ -244,26 +258,14 @@ def order_items(request):
     
     delivery_date = request.POST['delivery_date']
     shipping_address = request.POST['shipping_address']
-    print('delivery date', delivery_date)
     selected_date = datetime.strptime(delivery_date, "%Y-%m-%d").date()
-    # print(selected_date.date())
     current_date = date.today()
     status_code = 0
-    print('selected date', selected_date)
-    print('current date', current_date)
-    # print(date.today(),'today')
-    # s= date.today()
+    
     min_expected= current_date + timedelta(days = 3)
-    # print('minimum expecetd', min_expected)
-    # print(selected_date >= min_expected,'exp tru')
-    # print(selected_date <= current_date,'min date')
     if  selected_date >= min_expected:
         if  selected_date >= min_expected:
-             
-
-
             cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
-            print(cart_items)
             for item in cart_items:
                 item.delivery_date = delivery_date
                 order_no = 'OD' + str(random.randint(1111111111,9999999999))
@@ -277,6 +279,8 @@ def order_items(request):
             Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
                                                                                   status = 'order placed')
             Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
+            
+            
             return JsonResponse({'status': 'Order Placed', 'status_code': status_code})
         else:
             status_code = 403
@@ -306,24 +310,94 @@ def my_orders(request):
         return render(request,'HomeBake/my_orders.html',{'order_list': order_obj})
     return render(request,'HomeBake/my_orders.html')
 
-def payment(request):
-    if request.method == "POST":
-        amount = request.POST['total']       
-        notes={'shipping address':'bomalahalli,bangolre'}
+@csrf_exempt
+def create_checkout_session(request):
+    data = json.loads(request.body)
+    amount = data.get('amount', None)
+    custom_amount = amount
+    session = stripe.checkout.Session.create(
+    payment_method_types=['card'],
+    line_items=[{
+        'price_data': {
+            'currency': 'inr',  # Replace with the currency code as needed (e.g., 'usd', 'eur', 'inr', etc.)
+            'unit_amount': custom_amount,
+            'product_data': {
+                'name': '-',
+                # You can add more product information if needed
+            },
+        },
+        'quantity': 1,
+    }],
+    mode='payment',
+    billing_address_collection='auto',
+    success_url=YOUR_DOMAIN + '/',
+    cancel_url=YOUR_DOMAIN + '/',
 
-        # RAZOR pay methods 
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        payment = client.order.create( # creating a new order /(amount and nots sending to razaorpay ) 
-            {"amount": float(amount) * 100, "currency": "INR", "payment_capture": "1",'notes':notes}
+)   
+    delivery_date = data.get('delivery_date', None)
+    shipping_address = data.get('shipping_address', None)
+
+    selected_date = datetime.strptime(delivery_date, "%Y-%m-%d").date()
+    current_date = date.today()
+    
+    
+    min_expected= current_date + timedelta(days = 3)
+    if  selected_date >= min_expected:
+        if  selected_date >= min_expected:
+            cart_items = Cart.objects.filter(customer = request.session['customer'], status = 'pending')
+            for item in cart_items:
+                item.delivery_date = delivery_date
+                order_no = 'OD' + str(random.randint(1111111111,9999999999))
+
+                item.order_no = order_no
+                item.status = 'order placed'
+                status_code = 201
+                item.save()
+                
+
+            Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
+                                                                                  status = 'order placed')
+            Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
+    
+
+    return JsonResponse({
+        'session_id' : session.id,
+        'stripe_public_key' : settings.STRIPE_PUBLISHABLE_KEY
+    })
+
+
+@csrf_exempt
+def stripe_webhook(request):
+
+    print('WEBHOOK!')
+    # You can find your endpoint's secret in your webhook settings
+    endpoint_secret = 'whsec_5895e8a8a572f0357da4049984a56ea7fdf32bc6d29ba99b8fb74c19eb81e557'
+
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
         )
-        # end
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
 
-        # creating a oder in oder table (provider id taken by new order creating time / balance detail getting after pyment susses )
-        
-        
-         
-         
-        return JsonResponse(payment)
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        print(session)
+        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+        print(line_items)
+
+    return HttpResponse(status=200)
+
+
 
 def logout(request):
     del request.session['customer']

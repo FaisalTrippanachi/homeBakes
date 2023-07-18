@@ -78,14 +78,24 @@ WSGI_APPLICATION = 'Foodappproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'homebks_db',
+#         'USER': 'postgres',
+#         'PASSWORD' : 'root',
+#         'HOST': 'localhost',
+#         'PORT':'5432'
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'homebks_db',
-        'USER': 'postgres',
-        'PASSWORD' : 'root',
-        'HOST': 'localhost',
-        'PORT':'5432'
+        'USER': 'root',
+        'PASSWORD': '12345',
+        'HOST': 'localhost',    # Leave it as empty string '' if using localhost
     }
 }
 
@@ -122,7 +132,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+# ROOT_URLCONF = 'stripeIntegrate.urls'
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
@@ -147,3 +157,6 @@ EMAIL_HOST_USER = 'your email'
 EMAIL_HOST_PASSWORD = 'app password'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51LrGCGSDlov4iL9RbssDTM0ZuDiVketckREtltwaNSAXvf6s7hHHMLjNm29sG2XarmafsgSVktpLONfBwVSgwvZV00bxZAN3p4'
+STRIPE_SECRET_KEY = 'sk_test_51LrGCGSDlov4iL9R8MRQ4HCJhyFKCuQf5oOO38OIqiUeOr5LXPWLyJwbXaGutFclSo2Kbu9RQNVjhI0BZatfnLlK00UDL7K8IQ'

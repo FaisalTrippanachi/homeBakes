@@ -18,7 +18,7 @@ class Seller(models.Model):
     email = models.EmailField(max_length = 100)
     address = models.CharField(max_length = 500)
     username = models.CharField(max_length = 50)
-    password = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 300)
     status = models.CharField(max_length = 20, default = 'pending')
 
 
@@ -47,7 +47,7 @@ class Customer(models.Model):
 
     email = models.EmailField(max_length = 100)
     address = models.CharField(max_length = 500)
-    password = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 300)
    
     class Meta:
         db_table = 'customer_tb'

@@ -4,6 +4,7 @@ import random
 from django.core.paginator import Paginator
 from datetime import date
 from .decorator import auth_admin
+from django.contrib.auth.hashers import make_password
 # Create your views here.
 
 @auth_admin
@@ -55,9 +56,10 @@ def approve_Sellers(request, id):
     seller_id = random.randint(1111,9999)
     username = 'seller-' + str(seller.id) + str(seller_id)
     password = 'tmp-' + seller.seller_name.lower() + str(seller_id)
+    hashed_password = make_password(password)
     seller.status = 'active'
     seller.username = username
-    seller.password = password
+    seller.password = hashed_password
     seller.save()
     return redirect('HomeBakeAdmin:sellers_list','pending')
 

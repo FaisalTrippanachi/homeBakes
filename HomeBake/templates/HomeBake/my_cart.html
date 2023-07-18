@@ -66,8 +66,8 @@
 
                                 <div class="form-group">
                                     <label for="NAME" class="small text-muted mb-1">Address</label>
-                                    <textarea name="shipping_address" class="form-control" id="shipping_address"
-                                        cols="30" rows="5"> {{ customer.address }}</textarea>
+                                    <textarea style="text-align: left;" name="shipping_address" class="form-control"
+                                        id="shipping_address" cols="30" rows="5"> {{ customer.address }}</textarea>
                                 </div>
 
 
@@ -104,7 +104,8 @@
                                                 <div class="row ">
                                                     <div class="col">
                                                         <p class="mb-0"><b>{{ item.product.product_name | upper }}</b>
-                                                        </p><small class="text-muted">Seller : {{item.product.seller.seller_name | title }}</small>
+                                                        </p><small class="text-muted">Seller :
+                                                            {{item.product.seller.seller_name | title }}</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,7 +190,7 @@
 
 {% endif %}
 
-<script>
+<!-- <script>
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -204,9 +205,6 @@
 
             if ($('#shipping_address').val() != '' && $('#delivery_date').val() != '') {
 
-
-                
-
                 $.ajax({
                     url:'{% url "home_bake:order_items" %}',
                     type:'POST',
@@ -220,15 +218,15 @@
 
                         let status = response.status
                         let statusCode = response.status_code 
-                        alert(status)
+                        // alert(status)
 
                         if(statusCode == 201){
-                            window.location.href = "{% url 'home_bake:customer_home' %}"
-
+                            window.location.href = "{% url 'home_bake:payment_page' %}"
                         }
                         }
 
                 })
+                window.location.href = "{% url 'home_bake:payment_page' %}"
             }
 
             else {
@@ -240,5 +238,43 @@
 
     })
 
+</script> -->
+<script>
+    const buy_now_button = document.querySelector('#rzp-button1')
+
+    buy_now_button.addEventListener('click', event => {
+        if ($('#shipping_address').val() != '' && $('#delivery_date').val() != '') {
+            amount = "{{ total|add:20 }}"
+        fetch('/create-checkout-session/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Add the product amount or price here
+                amount: amount*100, // Replace with the actual product amount or use a dynamic value
+                shipping_address: $('#shipping_address').val(),
+                delivery_date: $('#delivery_date').val()
+            })
+        })
+            .then((result) => { return result.json() })
+            .then((data) => {
+                var stripe = Stripe(data.stripe_public_key);
+
+                stripe.redirectToCheckout({
+                    sessionId: data.session_id
+                }).then(function (result) {
+                    console.log(result)
+                    // If `redirectToCheckout` fails due to a browser or network
+                    // error, display the localized error message to your customer
+                    // using `result.error.message`.
+                });
+            })
+        }else {
+                window.alert('Please Fill Checkout Form')
+            }
+    });
+
 </script>
+<script src="https://js.stripe.com/v3/"></script>
 {% endblock %}

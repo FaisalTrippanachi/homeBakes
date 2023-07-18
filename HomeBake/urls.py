@@ -19,7 +19,7 @@ urlpatterns = [
     path('contact',views.contact,name='contact'),
     path('password/change',views.change_password,name='change_password'),
 
-    path('customer/pay',views.payment,name='payment'),
+    # path('customer/pay',views.payment,name='payment'),
 
     path('product/<int:id>',views.product_details,name='product_details'),
     path('cart',views.my_cart,name='cart'),
@@ -27,5 +27,10 @@ urlpatterns = [
     path('cart/remove/<int:id>',views.remove_cart,name='remove_cart'),
     path('cart/items/order',views.order_items,name='order_items'),
 
-    path('orders',views.my_orders,name='my_orders')
+    path('orders',views.my_orders,name='my_orders'),
+    path('payment_page',views.payment_page,name='payment_page'),
+    path('thanks/', views.thanks, name='thanks'),
+    # path('create-checkout-session',views.process_payment,name='create-checkout-session')
+    path('create-checkout-session/', views.create_checkout_session, name='checkout'),
+    path('stripe_webhook/', views.stripe_webhook, name='stripe_webhook')
 ]
