@@ -413,8 +413,8 @@ def change_password(request):
             if len(new_password) > 8:
                 if new_password == confirm_password:
                     customer = Customer.objects.get(id = request.session['customer'])
-                    if customer.password == old_password:
-                        customer.password = new_password
+                    if check_password(old_password, customer.password):
+                        customer.password = make_password(new_password)
                         customer.save()
                         status_msg = 'Password Changed'
 
