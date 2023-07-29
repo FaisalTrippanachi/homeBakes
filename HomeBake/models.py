@@ -20,8 +20,8 @@ class Seller(models.Model):
     username = models.CharField(max_length = 50)
     password = models.CharField(max_length = 300)
     status = models.CharField(max_length = 20, default = 'pending')
-
-
+    latitude= models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     
     class Meta:
         db_table = 'seller_tb'

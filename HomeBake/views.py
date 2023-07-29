@@ -14,6 +14,8 @@ import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import json
+import googlemaps
+from django.conf import settings
 
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
@@ -74,7 +76,12 @@ def seller_register(request):
 
         seller_name = request.POST['seller_name'].lower()
         email = request.POST['email']
+        #Calculate latitude and longitude of location using given pincode
         zipcode = request.POST['zipcode']
+        gmpas = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
+        geocode_results = gmpas.geocode(zipcode)
+        latitude = geocode_results[0]['geometry']['location']['lat']
+        longitude = geocode_results[0]['geometry']['location']['lng']
 
         phone = request.POST['phone']
         address = request.POST['address']
@@ -86,8 +93,9 @@ def seller_register(request):
             phone = phone,
             address  = address,
             zipcode = zipcode,
-            location = location
-            
+            location = location,
+            latitude = latitude,
+            longitude = longitude
         )
 
         seller.save()
@@ -148,7 +156,7 @@ def login(request, user_type):
                 msg ='invalid email or password'    
         elif user_type == 'seller':
             try:
-                seller = Seller.objects.get(username = username, password = password)
+                seller = Seller.objects.get(username = username)
                 request.session['seller']=seller.id
                 request.session['seller_name']=seller.seller_name
                 return redirect('seller:dashboard')
@@ -172,14 +180,24 @@ def seller_login(request):
 def about(request):
     return render(request,'HomeBake/about.html')
 
-def product(request):
-    
-    
+def product(request):    
     if request.method == 'POST':
-        
-        search_text = request.POST['search_text']
-        if search_text != '':
-            search_result = Product.objects.filter(Q(seller__zipcode = search_text) | Q(seller__location = search_text))
+        search_pincode = request.POST["search_pincode"]
+        if search_pincode != '':
+            gmpas = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
+            geocode_results = gmpas.geocode(search_pincode)
+            if geocode_results:
+                latitude = geocode_results[0]['geometry']['location']['lat']
+                longitude = geocode_results[0]['geometry']['location']['lng']
+                # Calculate the latitude and longitude range for 2 miles (approximately 3.21869 kilometers)
+                # The formula to convert miles to degrees is 1 mile ≈ 0.01449275362 degrees
+                mile_to_degree = 0.01449275362
+                latitude_range = 2 * mile_to_degree
+                longitude_range = 2 * mile_to_degree
+                sellers = Seller.objects.filter(latitude__range=(latitude - latitude_range, latitude + latitude_range),longitude__range=(longitude - longitude_range, longitude + longitude_range))
+                search_result = Product.objects.filter(seller__in=sellers)
+            else:
+                search_result = []
             
             return render(request,'HomeBake/product.html', {'products': search_result})
     
