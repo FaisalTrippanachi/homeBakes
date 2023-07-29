@@ -14,6 +14,12 @@ import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import json
+
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
@@ -86,19 +92,20 @@ def seller_register(request):
 
         seller.save()
         status_msg = 'Account Created'
-        return render(request, 'HomeBake/seller_register.html', {'msg': status_msg})
+        
 
-    #     message = '''
-    #             Thank you for registering, you will get a username and temporary 
-    #             password once our Admin approves your Account
-    #                     '''
+        message = '''
+                Thank you for registering, you will get a username and temporary 
+                password once our Admin approves your Account
+                        '''
 
-    #     send_mail(
-    #          subject = 'account creation',
-    #          message = message,
-    #          from_email = settings.EMAIL_HOST_USER,
-    #          recipient_list = [seller.email]
-    #     ) 
+        send_mail(
+             subject = 'account creation',
+             message = message,
+             from_email = settings.EMAIL_HOST_USER,
+             recipient_list = [seller.email]
+        )
+        return render(request, 'HomeBake/seller_register.html', {'msg': status_msg}) 
     return render(request, 'HomeBake/seller_register.html')
 
 
@@ -248,7 +255,7 @@ def my_cart(request):
         if cart_items:
             sum_total = Cart.objects.filter(customer = request.session['customer'], status = 'pending').aggregate(total =Sum(F('qty') * F('price')))
             customer = Customer.objects.get(id = request.session['customer'])
-            print('summmm',sum_total)
+            print('sum',sum_total)
             return render(request,'HomeBake/my_cart.html',{'cart_items': cart_items,'total': sum_total['total'], 'customer': customer})
     return render(request,'HomeBake/my_cart.html',)
 
@@ -356,7 +363,21 @@ def create_checkout_session(request):
             Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
                                                                                   status = 'order placed')
             Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
-    
+            customer = Customer.objects.get(id=request.session['customer'])
+            
+            html_message = render_to_string('HomeBake/email_template.html', {'cart_items': cart_items,'order_no':'OD' + str(random.randint(1111111111,9999999999)),'name':customer.customer_name})
+
+            # Create a plain text alternative for email clients that don't support HTML
+            plain_text_message = strip_tags(html_message)
+
+            # Send the email using EmailMultiAlternatives
+            subject = 'Order Dispatch'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [customer.email]
+
+            email = EmailMultiAlternatives(subject, plain_text_message, from_email, recipient_list)
+            email.attach_alternative(html_message, 'text/html')
+            email.send()
 
     return JsonResponse({
         'session_id' : session.id,

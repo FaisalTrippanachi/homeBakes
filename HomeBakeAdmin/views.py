@@ -5,6 +5,8 @@ from django.core.paginator import Paginator
 from datetime import date
 from .decorator import auth_admin
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 @auth_admin
@@ -61,6 +63,15 @@ def approve_Sellers(request, id):
     seller.username = username
     seller.password = hashed_password
     seller.save()
+
+    message = 'Thank you for registering, your account username is '+ username + 'and password is ' +password
+
+    send_mail(
+        subject = 'Your account was Approved',
+        message = message,
+        from_email = settings.EMAIL_HOST_USER,
+        recipient_list = [seller.email]
+    ) 
     return redirect('HomeBakeAdmin:sellers_list','pending')
 
 @auth_admin
