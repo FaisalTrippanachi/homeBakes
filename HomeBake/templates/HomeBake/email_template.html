@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+        /* Some basic styling for the invoice table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Invoice Header -->
+    <h1>Invoice</h1>
+    <table>
+        <tr>
+            <th>Company Name:</th>
+            <td>Home Bakes</td>
+        </tr>
+        <tr>
+            <th>Customer Name:</th>
+            <td>{{name}}</td>
+        </tr>
+        <tr>
+            <th>Order No:</th>
+            <td>{{order_no}}</td>
+        </tr>
+    </table>
+
+    <!-- Product Items -->
+    <h2>Product Items</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Rate</th>
+        </tr>
+        {% for cart_item in cart_items %}
+        <tr>
+            <td>{{ cart_item.product.product_name | upper }}</td>
+            <td>{{ Cart_item.product_total }}</td>
+        </tr>
+        {% endfor %}
+        <!-- Add more product rows as needed -->
+    </table>
+</body>
+</html>

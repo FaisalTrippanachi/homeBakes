@@ -17,6 +17,15 @@ import json
 import googlemaps
 from django.conf import settings
 
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
+
 
 # Create your views here.
 
@@ -49,7 +58,7 @@ def customer_register(request):
             email = email,
             phone = phone,
             address  = address,
-            password = password,
+            password = make_password(password),
             zipcode = zipcode,
             location = location
             
@@ -91,19 +100,20 @@ def seller_register(request):
 
         seller.save()
         status_msg = 'Account Created'
-        return render(request, 'HomeBake/seller_register.html', {'msg': status_msg})
+        
 
-    #     message = '''
-    #             Thank you for registering, you will get a username and temporary 
-    #             password once our Admin approves your Account
-    #                     '''
+        message = '''
+                Thank you for registering, you will get a username and temporary 
+                password once our Admin approves your Account
+                        '''
 
-    #     send_mail(
-    #          subject = 'account creation',
-    #          message = message,
-    #          from_email = settings.EMAIL_HOST_USER,
-    #          recipient_list = [seller.email]
-    #     ) 
+        send_mail(
+             subject = 'account creation',
+             message = message,
+             from_email = settings.EMAIL_HOST_USER,
+             recipient_list = [seller.email]
+        )
+        return render(request, 'HomeBake/seller_register.html', {'msg': status_msg}) 
     return render(request, 'HomeBake/seller_register.html')
 
 
@@ -125,23 +135,22 @@ def login(request, user_type):
         username = request.POST['username']
         password = request.POST['password']
         if user_type == 'customer':
-
              
             try:
-                customer = Customer.objects.get(email = username, password = password)
-                request.session['customer']= customer.id
-                request.session['zipcode'] = customer.zipcode
-                request.session['customer_name'] = customer.customer_name
+                customer = Customer.objects.get(email = username)
+                if check_password(password, customer.password):
+                    request.session['customer']= customer.id
+                    request.session['zipcode'] = customer.zipcode
+                    request.session['customer_name'] = customer.customer_name
+                    request.session['location'] = customer.location
 
-                request.session['location'] = customer.location
-
-                if 'product_url' in request.session:
-                     
-                    redirect_path = request.session['product_url']
-                     
-                    del request.session['product_url']
-                    return redirect(redirect_path)
-                return redirect('home_bake:customer_home')
+                    if 'product_url' in request.session:
+                        redirect_path = request.session['product_url']
+                        del request.session['product_url']
+                        return redirect(redirect_path)
+                    return redirect('home_bake:customer_home')
+                else:
+                    msg ='invalid email or password'
             except Exception as e:
                 print(e)
                 msg ='invalid email or password'    
@@ -150,10 +159,6 @@ def login(request, user_type):
                 seller = Seller.objects.get(username = username)
                 request.session['seller']=seller.id
                 request.session['seller_name']=seller.seller_name
-                
-
-
-                
                 return redirect('seller:dashboard')
             except:
                 msg ='invalid email or password'    
@@ -268,7 +273,7 @@ def my_cart(request):
         if cart_items:
             sum_total = Cart.objects.filter(customer = request.session['customer'], status = 'pending').aggregate(total =Sum(F('qty') * F('price')))
             customer = Customer.objects.get(id = request.session['customer'])
-            print('summmm',sum_total)
+            print('sum',sum_total)
             return render(request,'HomeBake/my_cart.html',{'cart_items': cart_items,'total': sum_total['total'], 'customer': customer})
     return render(request,'HomeBake/my_cart.html',)
 
@@ -376,7 +381,21 @@ def create_checkout_session(request):
             Cart.objects.filter(customer = request.session['customer']).update(delivery_date = delivery_date, 
                                                                                   status = 'order placed')
             Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
-    
+            customer = Customer.objects.get(id=request.session['customer'])
+            
+            html_message = render_to_string('HomeBake/email_template.html', {'cart_items': cart_items,'order_no':'OD' + str(random.randint(1111111111,9999999999)),'name':customer.customer_name})
+
+            # Create a plain text alternative for email clients that don't support HTML
+            plain_text_message = strip_tags(html_message)
+
+            # Send the email using EmailMultiAlternatives
+            subject = 'Order Dispatch'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [customer.email]
+
+            email = EmailMultiAlternatives(subject, plain_text_message, from_email, recipient_list)
+            email.attach_alternative(html_message, 'text/html')
+            email.send()
 
     return JsonResponse({
         'session_id' : session.id,
@@ -433,8 +452,8 @@ def change_password(request):
             if len(new_password) > 8:
                 if new_password == confirm_password:
                     customer = Customer.objects.get(id = request.session['customer'])
-                    if customer.password == old_password:
-                        customer.password = new_password
+                    if check_password(old_password, customer.password):
+                        customer.password = make_password(new_password)
                         customer.save()
                         status_msg = 'Password Changed'
 
