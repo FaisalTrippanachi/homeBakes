@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Foodappproject.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'homebks_db',
+#         'NAME': 'cake_bakery',
 #         'USER': 'postgres',
 #         'PASSWORD' : 'root',
 #         'HOST': 'localhost',
@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'Foodappproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homebks_db',
+        'NAME': 'cake_bakery',
         'USER': 'root',
-        'PASSWORD': '12345',
+        'PASSWORD': '',
         'HOST': 'localhost',    # Leave it as empty string '' if using localhost
     }
 }
@@ -153,8 +153,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your email'
-EMAIL_HOST_PASSWORD = 'app password'
+EMAIL_HOST_USER = 'js5880167'
+EMAIL_HOST_PASSWORD = 'ivccxbuertwzpzwf'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
