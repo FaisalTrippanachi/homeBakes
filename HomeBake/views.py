@@ -14,6 +14,9 @@ import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import json
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
 
 
 # Create your views here.
@@ -47,7 +50,7 @@ def customer_register(request):
             email = email,
             phone = phone,
             address  = address,
-            password = password,
+            password = make_password(password),
             zipcode = zipcode,
             location = location
             
@@ -117,23 +120,22 @@ def login(request, user_type):
         username = request.POST['username']
         password = request.POST['password']
         if user_type == 'customer':
-
              
             try:
-                customer = Customer.objects.get(email = username, password = password)
-                request.session['customer']= customer.id
-                request.session['zipcode'] = customer.zipcode
-                request.session['customer_name'] = customer.customer_name
+                customer = Customer.objects.get(email = username)
+                if check_password(password, customer.password):
+                    request.session['customer']= customer.id
+                    request.session['zipcode'] = customer.zipcode
+                    request.session['customer_name'] = customer.customer_name
+                    request.session['location'] = customer.location
 
-                request.session['location'] = customer.location
-
-                if 'product_url' in request.session:
-                     
-                    redirect_path = request.session['product_url']
-                     
-                    del request.session['product_url']
-                    return redirect(redirect_path)
-                return redirect('home_bake:customer_home')
+                    if 'product_url' in request.session:
+                        redirect_path = request.session['product_url']
+                        del request.session['product_url']
+                        return redirect(redirect_path)
+                    return redirect('home_bake:customer_home')
+                else:
+                    msg ='invalid email or password'
             except Exception as e:
                 print(e)
                 msg ='invalid email or password'    
@@ -142,10 +144,6 @@ def login(request, user_type):
                 seller = Seller.objects.get(username = username, password = password)
                 request.session['seller']=seller.id
                 request.session['seller_name']=seller.seller_name
-                
-
-
-                
                 return redirect('seller:dashboard')
             except:
                 msg ='invalid email or password'    
@@ -415,8 +413,8 @@ def change_password(request):
             if len(new_password) > 8:
                 if new_password == confirm_password:
                     customer = Customer.objects.get(id = request.session['customer'])
-                    if customer.password == old_password:
-                        customer.password = new_password
+                    if check_password(old_password, customer.password):
+                        customer.password = make_password(new_password)
                         customer.save()
                         status_msg = 'Password Changed'
 
