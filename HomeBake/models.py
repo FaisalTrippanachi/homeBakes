@@ -48,6 +48,8 @@ class Customer(models.Model):
     email = models.EmailField(max_length = 100)
     address = models.CharField(max_length = 500)
     password = models.CharField(max_length = 300)
+
+    first_user = models.BooleanField(default=False)
    
     class Meta:
         db_table = 'customer_tb'
