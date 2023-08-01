@@ -30,7 +30,7 @@
             <div class="card shadow-lg ">
                 <div class="row p-2 mt-3 justify-content-between mx-sm-2">
                     <div class="col">
-                        <p class="  space mb-0 shop"> Customer Name : {{ request.session.customer_name }}</p>
+                        <p class="  space mb-0 shop" > Customer Name : {{ request.session.customer_name }}</p>
                         <p class=" space mb-0 shop">Zipcode : {{ request.session.zipcode }}</p>
                     </div>
 
@@ -103,7 +103,7 @@
                                             <div class="media-body  my-auto">
                                                 <div class="row ">
                                                     <div class="col">
-                                                        <p class="mb-0"><b>{{ item.product.product_name | upper }}</b>
+                                                        <p class="mb-0" id = "product_name" name = "product_name"><b>{{ item.product.product_name | upper }}</b>
                                                         </p><small class="text-muted">Seller :
                                                             {{item.product.seller.seller_name | title }}</small>
                                                     </div>
@@ -112,10 +112,10 @@
                                         </div>
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto  my-auto">
-                                        <p class="boxed"> {{ item.qty }} Kg</p>
+                                        <p class="boxed"> {{ item.qty }} pound</p>
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto my-auto">
-                                        <p><b> Rs {{ item.product_total }}</b></p>
+                                        <p><b> £ {{ item.product_total }}</b></p>
                                     </div>
 
                                     <div class="pl-0 flex-sm-col col-auto my-auto">
@@ -134,7 +134,7 @@
                                                 <p class="mb-1"><b>Subtotal</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>Rs {{ total }}</b></p>
+                                                <p class="mb-1"><b>£ {{ total }}</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -142,7 +142,7 @@
                                                 <p class="mb-1"><b>Shipping</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>Rs 20</b></p>
+                                                <p class="mb-1"><b>£ 3</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -150,7 +150,7 @@
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b> Rs {{ total|add:20 }}</b></p>
+                                                <p class="mb-1"><b> £ {{ total|add:3 }}</b></p>
                                             </div>
                                         </div>
                                         <hr class="my-0">
@@ -159,7 +159,7 @@
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b> Rs {{ total|add:20 }}</b></p>
+                                                <p class="mb-1"><b> £ {{ total|add:3 }}</b></p>
                                             </div>
                                         </div>
                                         <hr class="my-0">
@@ -244,7 +244,8 @@
 
     buy_now_button.addEventListener('click', event => {
         if ($('#shipping_address').val() != '' && $('#delivery_date').val() != '') {
-            amount = "{{ total|add:20 }}"
+            amount = "{{ total|add:3 }}"
+            
         fetch('/create-checkout-session/', {
             method: 'POST',
             headers: {
@@ -253,6 +254,7 @@
             body: JSON.stringify({
                 // Add the product amount or price here
                 amount: amount*100, // Replace with the actual product amount or use a dynamic value
+                product_name:$('#product_name').val(),
                 shipping_address: $('#shipping_address').val(),
                 delivery_date: $('#delivery_date').val()
             })

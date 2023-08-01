@@ -337,12 +337,15 @@ def my_orders(request):
 def create_checkout_session(request):
     data = json.loads(request.body)
     amount = data.get('amount', None)
+    product = data.get('product_name',None)
     custom_amount = amount
+    custom_product = product
+    print(custom_product)
     session = stripe.checkout.Session.create(
     payment_method_types=['card'],
     line_items=[{
         'price_data': {
-            'currency': 'inr',  # Replace with the currency code as needed (e.g., 'usd', 'eur', 'inr', etc.)
+            'currency': 'gbp',  # Replace with the currency code as needed (e.g., 'usd', 'eur', 'inr', etc.)
             'unit_amount': custom_amount,
             'product_data': {
                 'name': '-',

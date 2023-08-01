@@ -75,7 +75,7 @@
                     <div class="card-body">
                         <h5 class="card-title product-name">{{ product.product_name | upper }}</h5>
                         <p class="card-title p-type">Type : {{ product.category | title }}</p>
-                        <p class="p-price"> Price : Rs {{ product.price }}</p>
+                        <p class="p-price"> Price : £ {{ product.price }}</p>
                         <p>Status : {% if product.status == 'available' %} <span style="color:green">{{ product.status }} {% else %}<span style="color:red">{{ product.status }} {% endif %}</span> </p>
                         <p>Location : {{ product.seller.location }}</p>
                          
