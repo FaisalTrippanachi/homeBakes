@@ -165,10 +165,10 @@
       // pass 
 
       password.onkeyup = function(){
-          var pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+          var pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{14,}$/;
           console.log(number.value.match(pattern))
           if(password.value.match(pattern) == null){
-              document.getElementById('checkpass').innerHTML='Password must contain at least 8 characters, including at least one letter and one number.'
+              document.getElementById('checkpass').innerHTML='Password must be alphanumeric se with at least 8 characters, including at least one uppercase letter,a number and a special character.'
               document.getElementById('checkpass').style.color = 'red'
               number.style.border = 'solid red'
           }

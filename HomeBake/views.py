@@ -70,13 +70,18 @@ def customer_register(request):
 
     return render(request, 'HomeBake/customer_register.html')
 
+from datetime import datetime
+from django.shortcuts import render
+from .models import Seller
+from django.core.mail import send_mail
+from django.conf import settings
+import googlemaps
+
 def seller_register(request):
-
     if request.method == 'POST':
-
         seller_name = request.POST['seller_name'].lower()
         email = request.POST['email']
-        #Calculate latitude and longitude of location using given pincode
+        # Calculate latitude and longitude of location using the given pincode
         zipcode = request.POST['zipcode']
         gmpas = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
         geocode_results = gmpas.geocode(zipcode)
@@ -87,20 +92,35 @@ def seller_register(request):
         address = request.POST['address']
         location = request.POST['location']
 
+        business_license_number = request.POST['business_license_number']
+        license_expire_date_str = request.POST['license_expire_date']
+        food_hygiene_clearance_number = request.POST['food_hygiene_clearance_number']
+        safety_clearance_certificate_number = request.POST['safety_clearance_certificate_number'] 
+
+        try:
+            license_expire_date = datetime.strptime(license_expire_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            # Handle invalid date format gracefully (e.g., show an error message)
+            # You may redirect the user back to the registration form.
+            return render(request, 'HomeBake/seller_register.html', {'error_message': 'Invalid date format'})
+
         seller = Seller(
-            seller_name = seller_name,
-            email = email,
-            phone = phone,
-            address  = address,
-            zipcode = zipcode,
-            location = location,
-            latitude = latitude,
-            longitude = longitude
+            seller_name=seller_name,
+            email=email,
+            phone=phone,
+            address=address,
+            zipcode=zipcode,
+            location=location,
+            latitude=latitude,
+            longitude=longitude,
+            business_license_number=business_license_number,
+            license_expire_date=license_expire_date,
+            food_hygiene_clearance_number=food_hygiene_clearance_number,
+            safety_clearance_certificate_number=safety_clearance_certificate_number
         )
 
         seller.save()
         status_msg = 'Account Created'
-        
 
         message = '''
                 Thank you for registering, you will get a username and temporary 
@@ -108,13 +128,15 @@ def seller_register(request):
                         '''
 
         send_mail(
-             subject = 'account creation',
-             message = message,
-             from_email = settings.EMAIL_HOST_USER,
-             recipient_list = [seller.email]
+             subject='account creation',
+             message=message,
+             from_email=settings.EMAIL_HOST_USER,
+             recipient_list=[seller.email]
         )
         return render(request, 'HomeBake/seller_register.html', {'msg': status_msg}) 
+
     return render(request, 'HomeBake/seller_register.html')
+
 
 
 def check_seller_email(request):

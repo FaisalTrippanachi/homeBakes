@@ -62,7 +62,11 @@
                 <th scope="col">Email</th>
                 <th scope="col">Phone No</th>
                 <th scope="col">Address</th>
-                <th></th>
+                <th scope="col">Bussines Liscence No.</th>
+                <th scope="col">Liscence Exp. date</th>
+                <th scope="col">Food Hygiene clearance No.</th>
+                <th scope="col">Safety Clearance Certificate No.</th>
+                
 
                 
               </tr>
@@ -75,6 +79,10 @@
                 <td>{{ seller.email }}</td>
                 <td>{{ seller.phone }}</td>
                 <td>{{ seller.address }} </td>
+                <td>{{ seller.business_license_number }} </td>
+                <td>{{ seller.license_expire_date }} </td>
+                <td>{{ seller.food_hygiene_clearance_number }} </td>
+                <td>{{ seller.safety_clearance_certificate_number }} </td>
                 {% if status == 'pending' %}
                 <td>
                   <a class="btn btn-success" href="{% url 'HomeBakeAdmin:approve_Sellers' seller.id %}">Approve</a>
