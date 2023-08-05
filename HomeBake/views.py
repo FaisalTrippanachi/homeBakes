@@ -60,7 +60,8 @@ def customer_register(request):
             address  = address,
             password = make_password(password),
             zipcode = zipcode,
-            location = location
+            location = location,
+            first_user = 1
             
         )
 
@@ -263,21 +264,25 @@ def contact(request):
 def product_details(request,id):
     status_msg = ''
     if request.method == 'POST':
-       
-
-
         if 'customer' in request.session:
             price = request.POST['p_price']
             qty = request.POST['cart_qty']
 
-            cart_exist = Cart.objects.filter(product = id, customer = request.session['customer'], status = 'pending').exists()
+            #Check product from other sellers already in the cart
+            cart_exist = Cart.objects.filter(~Q(product = id), customer = request.session['customer'], status = 'pending').exists()
             if not cart_exist:
-                cart = Cart(customer_id = request.session['customer'],
-                            price = price, qty = qty, product_id = id)
-                cart.save()
+                #If the current product exist, then get, otherwise create . 
+                existing_cart_entry, created = Cart.objects.get_or_create(customer_id =request.session['customer'],status = 'pending', product_id =id,defaults =  { 'price':price, 'qty':qty })
+
+                if not created:
+                    existing_cart_entry.qty += float(qty)
+                    existing_cart_entry.save()
+                #else:
+                #cart = Cart(customer_id = request.session['customer'],price = price, qty = qty, product_id = id)
+                #cart.save()
                 return redirect('home_bake:cart')
             else:
-                status_msg = 'Item Already in Cart'
+                status_msg = 'Item from one seller already in the cart. You can not add items from different seller same time'
         
 
         else:
@@ -295,8 +300,17 @@ def my_cart(request):
         if cart_items:
             sum_total = Cart.objects.filter(customer = request.session['customer'], status = 'pending').aggregate(total =Sum(F('qty') * F('price')))
             customer = Customer.objects.get(id = request.session['customer'])
-            print('sum',sum_total)
-            return render(request,'HomeBake/my_cart.html',{'cart_items': cart_items,'total': sum_total['total'], 'customer': customer})
+            sub_total = sum_total['total']
+            
+            if customer.first_user:
+                sub_total = sum_total['total'] - ((10 * sum_total['total'])/100)
+            return render(request,'HomeBake/my_cart.html',
+                          {'cart_items': cart_items,
+                           'total': sub_total, 
+                           'customer': customer,
+                           'first_user': customer.first_user
+                           }
+                           )
     return render(request,'HomeBake/my_cart.html',)
 
 def order_items(request):
@@ -404,6 +418,9 @@ def create_checkout_session(request):
                                                                                   status = 'order placed')
             Customer.objects.filter(id = request.session['customer']).update(address = shipping_address)
             customer = Customer.objects.get(id=request.session['customer'])
+
+            customer.first_user = 0
+            customer.save()
             
             html_message = render_to_string('HomeBake/email_template.html', {'cart_items': cart_items,'order_no':'OD' + str(random.randint(1111111111,9999999999)),'name':customer.customer_name})
 
