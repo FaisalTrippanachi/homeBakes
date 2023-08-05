@@ -27,7 +27,7 @@
               <label for="seller_name">Seller Name</label>
             </td>
             <td>
-              <input type="text" required class="form-control " id="sname" name="seller_name">
+              <input type="text" required class="form-control " id="sname" name="seller_name" >
               <span id="checkname" style="font-size: small"></span>
             </td>
           </tr>
@@ -77,11 +77,51 @@
             <textarea name="address" required class="form-control" id="" cols="30" rows="5"></textarea>
             </td>
           </tr>
-  
+
+          <!-- Certificate details -->
+          
+
+          <tr>
+            <td>
+              <label for="id_business_license_number">Business License Number:</label>
+            </td>
+            <td>
+             <input type="text" id="id_business_license_number" name="business_license_number" required>
+             <span id="check_business_license_number" style="font-size: small"></span>
+            </td>
+          </tr>
+
+          <tr>
+           <td>
+            <label for="id_license_expire_date">License Expiration Date:</label>
+           </td>
+           <td>
+            <input type="date" id="id_license_expire_date" name="license_expire_date" required>
+            <span id="check_license_expire_date" style="font-size: small"></span>
+           </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="id_food_hygiene_clearance_number">Food Hygiene Clearance Number:</label>
+            </td>
+            <td>
+              <input type="text" id="id_food_hygiene_clearance_number" name="food_hygiene_clearance_number" required>
+              <span id="check_food_hygiene_clearance_number" style="font-size: small"></span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="id_safety_clearance_certificate_number">Safety Clearance Certificate Number:</label>
+            </td>
+            <td>
+              <input type="text" id="id_safety_clearance_certificate_number" name="safety_clearance_certificate_number" required>
+              <span id="check_safety_clearance_certificate_number" style="font-size: small"></span>
+            </td>
+          </tr>
   
           <tr>
-            <td></td>
-  
             <td>
   
               <button type="submit" id="btn-reg" class="btn btn-primary w-50">Signup </button>
@@ -93,15 +133,22 @@
   
         </table>
       </form>
+    </div>
+    </div>
 
-      <!-- val start  -->
+ <!-- val start  -->
 
 
 <script>
 
-  var sname = document.getElementById('sname')
-  var semail = document.getElementById('semail')
-  var number = document.getElementById('sphone')
+  var sname = document.getElementById('sname');
+  var semail = document.getElementById('semail');
+  var number = document.getElementById('sphone');
+  var businessLicenseNumber = document.getElementById('id_business_license_number');
+  var licenseExpireDate = document.getElementById('id_license_expire_date');
+  var foodHygieneClearanceNumber = document.getElementById('id_food_hygiene_clearance_number');
+  var safetyClearanceCertificateNumber = document.getElementById('id_safety_clearance_certificate_number');
+
 
   sname.onkeyup = function () {
       var alphabets = /^[a-z A-Z]{2,}$/;
@@ -148,15 +195,80 @@
       }
   }
 
+  businessLicenseNumber.onkeyup = function() {
+        
+    var licenseNumberPattern = /^[A-Z0-9]{6,20}$/;
+    if (!businessLicenseNumber.value.match(licenseNumberPattern)) {
+    document.getElementById('check_business_license_number').innerHTML = 'Invalid business license number'
+    document.getElementById('check_business_license_number').style.color = 'red'
+    businessLicenseNumber.style.border = 'solid red'
+    }
+    else {
+    document.getElementById('check_business_license_number').innerHTML = ''
+    businessLicenseNumber.style.border = 'blue'
+    }
+    }
+
+    licenseExpireDate.onchange = function() {
+        // Add your validation logic for license expiration date
+        // Get the current date
+    var currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for comparison
+
+    // Convert the input date string to a Date object
+    var inputDate = new Date(this.value);
+
+    // Check if the input date is a valid date
+    if (isNaN(inputDate.getTime())) {
+        document.getElementById('check_license_expire_date').innerHTML = 'Invalid date format'
+        document.getElementById('check_license_expire_date').style.color = 'red'
+        licenseExpireDate.style.border = 'solid red'
+    } else if (inputDate < currentDate) {
+        document.getElementById('check_license_expire_date').innerHTML = 'License has already expired'
+        document.getElementById('check_license_expire_date').style.color = 'red'
+        licenseExpireDate.style.border = 'solid red'
+    } else {
+        document.getElementById('check_license_expire_date').innerHTML = ''
+        licenseExpireDate.style.border = 'blue'
+    }
+    }
+
+    foodHygieneClearanceNumber.onkeyup = function() {
+        // Add your validation logic for food hygiene clearance number
+        // Regular expression to validate the food hygiene clearance number
+    var hygieneNumberPattern = /^[A-Z0-9]{5,15}$/;
+
+   if (!foodHygieneClearanceNumber.value.match(hygieneNumberPattern)) {
+    document.getElementById('check_food_hygiene_clearance_number').innerHTML = 'Invalid food hygiene clearance number';
+    document.getElementById('check_food_hygiene_clearance_number').style.color = 'red';
+    foodHygieneClearanceNumber.style.border = 'solid red';
+   } else {
+    document.getElementById('check_food_hygiene_clearance_number').innerHTML = '';
+    foodHygieneClearanceNumber.style.border = 'blue';
+   }
+    }
+
+    safetyClearanceCertificateNumber.onkeyup = function() {
+        // Add your validation logic for safety clearance certificate number
+        var safetyclearanceNumberPattern = /^[A-Z0-9]{5,15}$/;
+
+   if (!safetyClearanceCertificateNumber.value.match(safetyclearanceNumberPattern)) {
+    document.getElementById('check_safety_clearance_certificate_number').innerHTML = 'Invalid food safety clearance certificate number';
+    document.getElementById('check_safety_clearance_certificate_number').style.color = 'red';
+    safetyClearanceCertificateNumber.style.border = 'solid red';
+   } else {
+    document.getElementById('check_safety_clearance_certificate_number').innerHTML = '';
+    safetyClearanceCertificateNumber.style.border = 'blue';
+   }
+    };
+
 
 
 </script>
 
 <!-- val end  -->
 
-    </div>
-  </div>
-
+    
 
   <script>
     $(document).ready(function () {
