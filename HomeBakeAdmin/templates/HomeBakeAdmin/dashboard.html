@@ -20,7 +20,7 @@
                 <div class="card">
                     <div>
                         <a href="{% url 'HomeBakeAdmin:sellers_list' 'pending' %}">
-                        <div class="cardName">Seller Request</div>
+                        <div class="cardName">PendingSeller Request</div>
                         <div class="numbers">
                             {{ pending_seller_count }} {% if pending_seller_count == 0 %} <span>No</span> {% else %} No{{ pending_seller_count | pluralize }} {% endif %}
                         </div>
@@ -34,7 +34,7 @@
                 <div class="card">
                     <div>
                         <a href="{% url 'HomeBakeAdmin:customers_list'   %}">
-                        <div class="cardName">Customers</div>
+                        <div class="cardName">Registered Customers</div>
                         <div class="numbers">
                             {{ customer_count }} {% if customer_count == 0 %} <span>No</span> {% else %} No{{ customer_count | pluralize }} {% endif %}
                         </div>
@@ -48,7 +48,7 @@
                 <div class="card">
                     <div>
                         <a href="{% url 'HomeBakeAdmin:sellers_list' 'active' %}">
-                        <div class="cardName">Sellers</div>
+                        <div class="cardName">Registerd Sellers</div>
                         <div class="numbers">
                             {{ active_seller_count }} {% if active_seller_count == 0 %} <span>No</span> {% else %} No{{ active_seller_count | pluralize }} {% endif %}
                         </div>
@@ -62,7 +62,7 @@
                 <div class="card">
                     <div>
                         <a href="{% url 'HomeBakeAdmin:users_msg' %}">
-                        <div class="cardName">Today's enquiry</div>
+                        <div class="cardName">Existing enquiries</div>
                         <div class="numbers">
                             {{ enquiry_today }} {% if enquiry_today == 0 %} <span>No</span> {% else %} No{{ enquiry_today | pluralize }} {% endif %}
                         </div>

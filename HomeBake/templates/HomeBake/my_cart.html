@@ -112,10 +112,10 @@
                                         </div>
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto  my-auto">
-                                        <p class="boxed"> {{ item.qty }} Kg</p>
+                                        <p class="boxed"> {{ item.qty }} pound</p>
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto my-auto">
-                                        <p><b> Rs {{ item.product_total }}</b></p>
+                                        <p><b> £ {{ item.product_total }}</b></p>
                                     </div>
 
                                     <div class="pl-0 flex-sm-col col-auto my-auto">
@@ -146,7 +146,7 @@
                                                 <p class="mb-1"><b>Subtotal</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>Rs {{ total }}</b></p>
+                                                <p class="mb-1"><b>£ {{ total }}</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -154,7 +154,7 @@
                                                 <p class="mb-1"><b>Shipping</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>Rs 20</b></p>
+                                                <p class="mb-1"><b>£ 20</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -165,13 +165,12 @@
                                                 <p class="mb-1"><b> Rs {{ sub_total|add:20 }}</b></p>
                                             </div>
                                         </div>
-                                        <hr class="my-0">
                                         <div class="row justify-content-between">
                                             <div class="col-4">
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b> Rs {{ total|add:20 }}</b></p>
+                                                <p class="mb-1"><b> £ {{ total|add:20 }}</b></p>
                                             </div>
                                         </div>
                                         <hr class="my-0">

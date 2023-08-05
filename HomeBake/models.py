@@ -22,6 +22,13 @@ class Seller(models.Model):
     status = models.CharField(max_length = 20, default = 'pending')
     latitude= models.FloatField(null=True)
     longitude = models.FloatField(null=True)
+    business_license_number = models.CharField(max_length=50)
+    license_expire_date = models.DateField()
+    food_hygiene_clearance_number = models.CharField(max_length=50)
+    safety_clearance_certificate_number = models.CharField(max_length=50)
+    status = models.CharField(max_length = 20, default = 'pending')
+    
+    
     
     class Meta:
         db_table = 'seller_tb'
