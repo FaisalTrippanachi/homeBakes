@@ -25,7 +25,8 @@ from django.utils.html import strip_tags
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
-
+from datetime import datetime
+from .models import Seller
 
 # Create your views here.
 
@@ -44,7 +45,6 @@ def thanks(request):
 
 def customer_register(request):
     if request.method == 'POST':
-
         customer_name = request.POST['customer_name'].lower()
         email = request.POST['email']
         phone = request.POST['phone']
@@ -54,29 +54,32 @@ def customer_register(request):
         location = request.POST['location']
 
         customer = Customer(
-            customer_name = customer_name,
-            email = email,
-            phone = phone,
-            address  = address,
-            password = make_password(password),
-            zipcode = zipcode,
-            location = location,
-            first_user = 1
-            
+            customer_name=customer_name,
+            email=email,
+            phone=phone,
+            address=address,
+            password=make_password(password),
+            zipcode=zipcode,
+            location=location,
+            first_user=1
         )
 
         customer.save()
-        return render(request, 'HomeBake/customer_register.html',{'status_msg': 'Account Created'})
-        
 
+        message = '''
+            Thank you for registering in HomeBakes
+        '''
+
+        send_mail(
+            subject='account creation',
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[customer.email]
+        )
+        return render(request, 'HomeBake/customer_register.html', {'status_msg': 'Account Created'})
     return render(request, 'HomeBake/customer_register.html')
 
-from datetime import datetime
-from django.shortcuts import render
-from .models import Seller
-from django.core.mail import send_mail
-from django.conf import settings
-import googlemaps
+
 
 def seller_register(request):
     if request.method == 'POST':
