@@ -378,7 +378,7 @@ def create_checkout_session(request):
     payment_method_types=['card'],
     line_items=[{
         'price_data': {
-            'currency': 'inr',  # Replace with the currency code as needed (e.g., 'usd', 'eur', 'inr', etc.)
+            'currency': 'gbp',  # Replace with the currency code as needed (e.g., 'usd', 'eur', 'inr', etc.)
             'unit_amount': custom_amount,
             'product_data': {
                 'name': '-',
@@ -422,7 +422,7 @@ def create_checkout_session(request):
             customer.first_user = 0
             customer.save()
             
-            html_message = render_to_string('HomeBake/email_template.html', {'cart_items': cart_items,'order_no':'OD' + str(random.randint(1111111111,9999999999)),'name':customer.customer_name})
+            html_message = render_to_string('HomeBake/email_template.html', {'cart_items': cart_items,'order_no':'OD' + str(random.randint(1111111111,9999999999)),'name':customer.customer_name,'price':custom_amount})
 
             # Create a plain text alternative for email clients that don't support HTML
             plain_text_message = strip_tags(html_message)

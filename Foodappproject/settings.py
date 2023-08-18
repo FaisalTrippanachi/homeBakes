@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'Foodappproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cake_bakery',
+        'NAME': 'homebks_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',    # Leave it as empty string '' if using localhost
@@ -158,5 +158,6 @@ EMAIL_HOST_PASSWORD = 'ivccxbuertwzpzwf'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
+GOOGLE_MAPS_API_KEY = 'AIzaSyCLfpPMxhALtAkYHkzYUx9bvhBsQba1dwg'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51LrGCGSDlov4iL9RbssDTM0ZuDiVketckREtltwaNSAXvf6s7hHHMLjNm29sG2XarmafsgSVktpLONfBwVSgwvZV00bxZAN3p4'
 STRIPE_SECRET_KEY = 'sk_test_51LrGCGSDlov4iL9R8MRQ4HCJhyFKCuQf5oOO38OIqiUeOr5LXPWLyJwbXaGutFclSo2Kbu9RQNVjhI0BZatfnLlK00UDL7K8IQ'

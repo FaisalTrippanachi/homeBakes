@@ -31,6 +31,10 @@
             <th>Order No:</th>
             <td>{{order_no}}</td>
         </tr>
+        <tr>
+            <th>Rate((in pound):</th>
+            <td>{{price}}</td>
+        </tr>
     </table>
 
     <!-- Product Items -->
@@ -38,12 +42,14 @@
     <table>
         <tr>
             <th>Name</th>
-            <th>Rate</th>
+            <th>Estimated Delivery Date</th>
+            <th>Delivery Address</th>
         </tr>
         {% for cart_item in cart_items %}
         <tr>
             <td>{{ cart_item.product.product_name | upper }}</td>
-            <td>{{ Cart_item.product_total }}</td>
+            <td>{{ cart_item.delivery_date }}</td>
+            <td>{{ cart_item.customer.address | upper }}</td>
         </tr>
         {% endfor %}
         <!-- Add more product rows as needed -->

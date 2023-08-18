@@ -154,7 +154,7 @@
                                                 <p class="mb-1"><b>Shipping</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>£ 20</b></p>
+                                                <p class="mb-1"><b>£ 03</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -162,7 +162,7 @@
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b> Rs {{ sub_total|add:20 }}</b></p>
+                                                <p class="mb-1"><b> £ {{ sub_total|add:03 }}</b></p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-between">
@@ -170,7 +170,7 @@
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b> £ {{ total|add:20 }}</b></p>
+                                                <p class="mb-1"><b> £ {{ total|add:03 }}</b></p>
                                             </div>
                                         </div>
                                         <hr class="my-0">
@@ -255,7 +255,7 @@
 
     buy_now_button.addEventListener('click', event => {
         if ($('#shipping_address').val() != '' && $('#delivery_date').val() != '') {
-            amount = "{{ total|add:20 }}"
+            amount = "{{ total|add:03 }}"
         fetch('/create-checkout-session/', {
             method: 'POST',
             headers: {

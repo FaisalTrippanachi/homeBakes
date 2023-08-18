@@ -98,11 +98,11 @@
                 <td id="td"> {{ item.order_date }}</td>
                
 
-                <td id="td"> {{ item.qty }} Kg </td>
+                <td id="td"> {{ item.qty }} pound </td>
                 <td id="td">{{ item.delivery_date }}</td>
-                <td id="td">Rs {{ item.price }}</td>
+                <td id="td">£ {{ item.price }}</td>
 
-                <td id="td"> Rs {% widthratio item.price 1 item.qty %} </td>
+                <td id="td"> £ {% widthratio item.price 1 item.qty %} </td>
                 <td id="td">{{ item.status }}</td>
                 <td id="td"><a href="{% url 'seller:update_work_status' 'out for delivery' item.id %}" class="btn btn-success">Ready to deliver</a></td>
 
